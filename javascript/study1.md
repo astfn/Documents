@@ -76,13 +76,13 @@ console.log(x); // Cannot access 'x' before initialization
 let x = 1;
 ```
 
-在`run`函数作用域中产生TDZ，不允许变量在未声明前使用。
+在`run`函数作用域中产生TDZ，不允许变量在声明前使用。
 
 ```TEXT
-hd = "houdunren";
+as = "Ashuntefannao";
 function run() {
-  console.log(hd);
-  let hd = "hdcms";
+  console.log(as);
+  let as = "Ashun";
 }
 run();
 ```
@@ -90,15 +90,15 @@ run();
 函数参数的解析，自左向右，下面代码b没有声明赋值不允许直接使用
 
 ```text
-function hd(a = b, b = 3) {}
-hd(); //Cannot access 'b' before initialization
+function test(a = b, b = 3) {}
+test(); //Cannot access 'b' before initialization
 ```
 
 因为a已经赋值，所以b可以使用a变量，下面代码访问正常
 
 ```text
-function hd(a = 2, b = a) {}
-hd(); 
+function test(a = 2, b = a) {}
+test(); 
 ```
 
 ### 二、块级作用域
@@ -141,12 +141,12 @@ console.log(as);//Uncaught ReferenceError: as is not defined
 
 ```
 function run() {
-        let hd = "houdunren";
+        let as = "Ashuntefannao";
         if (true) {
-          let hd = "hdcms";
-          console.log(hd); //hdcms
+          let as = "Ashun";
+          console.log(as); //Ashun
         }
-        console.log(hd); //houdunren
+        console.log(as); //Ashuntefannao
 }
 run();
 ```
@@ -178,7 +178,7 @@ console.log(web); //ashun
 >```
 >var web;//变量提升过程
 >function run() {
->web = "ashun";
+>	web = "ashun";
 >}
 >run();
 >console.log(web); //ashun
@@ -277,8 +277,8 @@ console.log(`商品优惠价格是:${price}`);//100
 使用`let` 可以避免上面的问题，因为let声明后的变量不允许在同一作用域中重新声明
 
 ```text
-let web = 'houdunren.com';
-let web = '后盾人'; //Identifier 'web' has already been declared
+let web = 'astfn.github.io';
+let web = '阿顺'; //Identifier 'web' has already been declared
 ```
 
 不同作用域可以重新声明
@@ -319,7 +319,7 @@ if (1) {
   }  
   ```
 
-  为了在多文件合并时，防止全局设置严格模式对其他没使用严格模式文件的影响，将脚本放在一个执行函数中。
+  为了在多文件合并时，防止全局设置严格模式对其他没使用严格模式文件的影响，将脚本放在一个立即执行函数中。
 
   ```text
   (function () {
@@ -483,6 +483,12 @@ if (1) {
 
 ## 基本类型
 
+>JavaScript中的基本数据类型有：boolean、null、undefined、number、string、symbol、BigInt。
+>
+>引用类型有：Object、Array、Function、Match、Date、RegExp、Set、WeakSet、Map、WeakMap…
+>
+>该标题所示基本类型意为 新手初始学习的一些数据类型。
+
 ### 一、 类型检测
 
 #### 1.1 typeof
@@ -502,15 +508,29 @@ if (1) {
   );
   ```
 
+不能正确判断的情况：
+
 ---使用构造函数实例化为对象，则返回Object。
 
 ```
-let hd = "houdunren";
-let cms = new String("hdcms"); 
-console.log(typeof hd, typeof cms); //string object
+let as = "Ashun";
+let str = new String("Ashun"); 
+console.log(typeof as, typeof str); //string object
 ```
 
----如果要正确判断使用构造函数实例化的以上数据类型、或Array。可以使用`instanceof` 👇
+---`typeof []`
+
+```
+console.log(typeof []);  //object
+```
+
+---关于`typeof null==='object'`
+
+首先要说明的是，null**不是!**对象，但为什么返回结果为`object`呢？
+
+解释: 这是JS的历史遗留bug，在 JS 的最初版本中使用的是 32 位系统，为了性能考虑使用低位存储变量的类型信息，000 开头代表是对象然而 null 表示为全零，所以将它错误的判断为 object 。
+
+>---如果要正确判断能够使用构造函数实例化的以上数据类型、或Array。可以使用`instanceof` 👇
 
 ----
 
@@ -524,7 +544,7 @@ console.log(typeof hd, typeof cms); //string object
 console.log([] instanceof Array);		//true
 ```
 
----检测typeof能够正确返回的数据类型（在不实例化的情况下）
+---检测typeof能够正确返回的数据类型（在不 手动实例化 的情况下）
 
 ​	只有obj、function能够返回正确的结果，其余返回false的数据类型如果通过构造函数实例化，则能够正确判断。
 
@@ -547,9 +567,9 @@ console.log({} instanceof Object);									//true
 下面是使用字面量与对象方法创建字符串，返回的是不同类型。
 
 ```text
-let hd = "houdunren";
-let cms = new String("hdcms"); 
-console.log(typeof hd, typeof cms); //string object
+let as = "astfn";
+let ext = new String(".github.io"); 
+console.log(typeof as, typeof ext); //string object
 ```
 
 只有对象才能够调用属性和方法，但在`JS`中也可以使用值类型调用方法，因为它会在执行时将值类型转为对象。
@@ -1082,27 +1102,27 @@ if ({}) console.log("true");
 使用 `!`或`!!` 转换布尔类型
 
 ```text
-let hd = '';
-console.log(!!hd); //false
-hd = 0;
-console.log(!!hd); //false
-hd = null;
-console.log(!!hd); //false
-hd = new Date("2021-3-13 16:42");
-console.log(!!hd); //true
+let as = '';
+console.log(!!as); //false
+as = 0;
+console.log(!!as); //false
+as = null;
+console.log(!!as); //false
+as = new Date("2021-3-13 16:42");
+console.log(!!as); //true
 ```
 
 使用 `Boolean` 函数可以显式转换为布尔类型
 
 ```text
-let hd = '';
-console.log(Boolean(hd)); //false
-hd = 0;
-console.log(Boolean(hd)); //false
-hd = null;
-console.log(Boolean(hd)); //false
-hd = new Date("2021-3-13 16:42");
-console.log(Boolean(hd)); //true
+let as = '';
+console.log(Boolean(as)); //false
+as = 0;
+console.log(Boolean(as)); //false
+as = null;
+console.log(Boolean(as)); //false
+as = new Date("2021-3-13 16:42");
+console.log(Boolean(as)); //true
 ```
 
 
@@ -1509,12 +1529,12 @@ console.timeEnd("testFor");
 * 将日期`转为数值类型`就是转为时间戳，单位是毫秒。
 
 ```text
-let hd = new Date("2020-2-22 10:33:12");
-console.log(hd * 1);
+let as = new Date("2020-2-22 10:33:12");
+console.log(as * 1);
 
-console.log(Number(hd));
+console.log(Number(as));
 
-console.log(hd.valueOf())
+console.log(as.valueOf())
 
 console.log(date.getTime());
 ```
@@ -2318,11 +2338,22 @@ console.log(arr.concat(["ASHUN", "TeFanNao"]));//["ashun", "Ashun", "ASHUN", "Te
 console.log(arr);//["ashun", "Ashun"]
 ```
 
+* 当传入的参数也为Array时，在合并时会自动将其展开一层。
+
+```
+let as = ["a"];
+console.log(as.concat("b"));	//["a","b"]
+console.log(as.concat("c",["d","e"],[[[["f"]]]]));	//["a","c","d","e",[[["f"]]]];
+console.log(as);	//["a"]
+```
+
+
+
 ---
 
 ##### copyWithin
 
-使用 `copyWithin` 从数组中复制一部分到同数组中的另一个位置。
+使用 `copyWithin` 从数组中复制一部分到同数组中的另一个位置。（该方法会改变原数组）
 
 语法说明
 
@@ -2342,7 +2373,8 @@ start、end`区间左闭右开`。
 
 ```text
 const arr = [1, 2, 3, 4];
-console.log(arr.copyWithin(2, 0, 2)); //[1, 2, 1, 2]
+arr.copyWithin(2, 0, 2)
+console.log(arr); //[1, 2, 1, 2]
 ```
 
 
@@ -3369,14 +3401,14 @@ class Cache {
 }
 
 let user = {
-name: "Ashun",
-type: "Controller",
-key: Symbol("用户"),
+	name: "Ashun",
+	type: "Controller",
+	key: Symbol("用户"),
 };
 let cart = {
-name: "ShoppingCart",
-type: "store",
-key: Symbol("购物车"),
+	name: "ShoppingCart",
+	type: "store",
+	key: Symbol("购物车"),
 };
 
 Cache.set(user, user.key);
@@ -3862,14 +3894,14 @@ document.querySelectorAll("button").forEach(item => Wset.add(item));
 const as = new WeakSet();
 const arr = ["Ashun"];
 //添加操作
-hd.add(arr);
-console.log(hd.has(arr));
+as.add(arr);
+console.log(as.has(arr));
 
 //删除操作
-hd.delete(arr);
+as.delete(arr);
 
 //检索判断
-console.log(hd.has(arr));
+console.log(as.has(arr));
 ```
 
 
@@ -3879,7 +3911,7 @@ console.log(hd.has(arr));
 WeaSet保存的引用类型`不会增加`引用计数器，如果一个对象不被引用了会自动删除。
 
 - 下例中的数组被 `arr` 引用了，引用计数器+1
-- 数据又添加到了 hd 的WeaSet中，引用计数还是1
+- 数据又添加到了 as 的WeaSet中，引用计数还是1
 - 当 `arr` 设置为null时，引用计数-1 此时对象引用为0
 - 当垃圾回收时对象被删除，这时WakeSet也就没有记录了
 
@@ -4075,7 +4107,7 @@ setTimeout(() => {
 
 
 
-## map
+## Map
 
 Map是一组`键值对`的结构，用于解决以往不能用对象做为键的问题
 
@@ -4097,23 +4129,23 @@ console.log(map); 	//Map(2) {"name" => "ashun", "age" => 18}
 使用构造函数`new Map`创建的原理如下
 
 ```text
-const hd = new Map();
+const as = new Map();
 const arr = [["ashun", "阿顺"], ["type", "Controller"]];
 
 arr.forEach(([key, value]) => {
-  hd.set(key, value);
+  as.set(key, value);
 });
-console.log(hd);
+console.log(as);
 ```
 
 对于键是对象的`Map`， 键保存的是内存地址，值相同但内存地址不同的视为两个键。
 
 ```text
 let arr = ["阿顺"];
-const hd = new Map();
-hd.set(arr, "Ashuntefannao.com");
-console.log(hd.get(arr)); //"Ashuntefannao.com
-console.log(hd.get(["阿顺"])); //undefined
+const as = new Map();
+as.set(arr, "Ashuntefannao.com");
+console.log(as.get(arr)); //"Ashuntefannao.com
+console.log(as.get(["阿顺"])); //undefined
 ```
 
 
@@ -4217,8 +4249,8 @@ for (const [key, value] of as.entries()) {
 使用`forEach`遍历操作
 
 ```text
-let hd = new Map([["houdunren", "后盾人"], ["hdcms", "开源系统"]]);
-hd.forEach((value, key) => {
+let as = new Map([["title", "Ashuntefannao"], ["name", "Ashun"]]);
+as.forEach((value, key) => {
   console.log(`${key}=>${value}`);
 });
 ```
@@ -4357,7 +4389,7 @@ map的key可以为任意类型，下面使用DOM节点做为键来记录DOM的de
 new WeakMap([["ashun", "tefannao"]]); // TypeError: Invalid value used as weak map key
 ```
 
-将DOM节点保存到`WeakSet`
+将DOM节点保存到`WeakMap`
 
 ```text
 <body>
@@ -4367,7 +4399,7 @@ new WeakMap([["ashun", "tefannao"]]); // TypeError: Invalid value used as weak m
 <script>
   const Wmap = new WeakMap();
   document.querySelectorAll("div").forEach(item => Wmap.set(item, item.innerHTML));
-  console.log(as); //WeakMap {div => "hdcms", div => "houdunren"}
+  console.log(as); //WeakMap {div => "ashuntefannao.com", div => "Ashun"}
 </script>
 ```
 
@@ -4375,20 +4407,20 @@ new WeakMap([["ashun", "tefannao"]]); // TypeError: Invalid value used as weak m
 
 #### 基本操作
 
-下面是WeakSet的常用指令
+下面是WeakMap的常用指令
 
 ```text
-const hd = new WeakMap();
+const Wmap = new WeakMap();
 const arr = ["ashun"];
 //添加操作
-hd.set(arr, "Ashuntefannao");
-console.log(hd.has(arr)); //true
+Wmap.set(arr, "Ashuntefannao");
+console.log(Wmap.has(arr)); //true
 
 //删除操作
-hd.delete(arr);
+Wmap.delete(arr);
 
 //检索判断
-console.log(hd.has(arr)); //false
+console.log(Wmap.has(arr)); //false
 ```
 
 
@@ -4699,8 +4731,8 @@ console.log(tfn(3));
 标准声明的函数优先级更高，解析器会优先提取函数并放在代码树顶端，所以标准声明函数位置不限制，所以下面的代码可以正常执行。
 
 ```text
-console.log(hd(3));
-function hd(num) {
+console.log(as(3));
+function as(num) {
 	return ++num;
 };
 ```
@@ -4708,14 +4740,14 @@ function hd(num) {
 标准声明优先级高于赋值声明
 
 ```text
-console.log(hd(3)); //4
+console.log(as(3)); //4
 
-function hd(num) {
+function as(num) {
   return ++num;
 }
 
-var hd = function() {
-  return "hd";
+var as = function() {
+  return "as";
 };
 ```
 
@@ -4889,7 +4921,7 @@ console.log(sum(2000, undefined, 0.3));
 ```text
 "use strict";
 (function () {
-    var web = 'houdunren';
+    var web = 'astfn.github.io';
 })();
 console.log(web); //web is not defined
 ```
@@ -4898,7 +4930,7 @@ console.log(web); //web is not defined
 
 ```text
 {
-	let web = 'houdunren';
+	let web = 'astfn.github.io';
 }
 console.log(web);
 ```
@@ -4928,8 +4960,8 @@ console.log(web);
 function filterFun(item) {
 	return item <= 3;
 }
-let hd = [1, 2, 3, 4, 5].filter(filterFun);
-console.log(hd); //[1,2,3]
+let arr = [1, 2, 3, 4, 5].filter(filterFun);
+console.log(arr); //[1,2,3]
 ```
 
 
@@ -4938,18 +4970,34 @@ console.log(hd); //[1,2,3]
 
 ### arguments
 
-arguments 是函数获得到所有参数集合，下面是使用 `arguments` 求和的例子
+arguments 是在函数内部获得所有参数集合的一个方式 ，下面是使用 `arguments` 求和的例子
+
+* arguments是一种类数组的对象，属性名称依次为0~n，且包含callee和length属性，但其不是Array，所以不能够直接使用数组的方法，若要使用Array的方法，我们需要将其转化为数组，或借用数组原型的方法。
 
 ```text
 function sum() {
-  return [...arguments].reduce((total, num) => {
-    return (total += num);
-  }, 0);
+  return [...arguments].reduce((total, num) => total += num , 0);
 }
-console.log(sum(2, 3, 4, 2, 6)); //17
 ```
 
-更建议使用展示语法
+```
+function sum() {
+  return Array.from(arguments).reduce((total, num) => (total += num), 0);
+}
+```
+
+```
+function sum() {
+  return Array.prototype.reduce.call(
+    arguments,
+    (pre, v) => (pre += v),
+    0
+  );
+}
+console.log(sum(1, 2, 3));	//6
+```
+
+更建议使用展示语法接收多个参数
 
 ```text
 function sum(...args) {
@@ -5084,7 +5132,7 @@ console.log(as.say()); 			//阿顺
 
 **对象字面量**
 
-- 下例中的hd函数不属于对象方法所以指向`window`
+- 下例中的as函数不属于对象方法所以指向`window`
 - show属于对象方法执向 `obj`对象
 
 ```text
@@ -5148,7 +5196,7 @@ console.log(Lesson.show());
 ```text
 var name = 'ASHUN';
 var obj = {
-  name: '后盾人',
+  name: 'ashun',
   getName: function () {
     return function () {
     	return this.name;
@@ -5699,7 +5747,8 @@ console.log(arr[3]()); //3
 闭包指子函数可以访问外部作用域变量的函数特性，即使在子函数所在的作用域外也可以访问。如果没有闭包那么在处理事件绑定，异步请求时都会变得困难。
 
 - 闭包一般在子函数本身作用域以外执行。
-- 闭包的形式：函数套函数，在子函数中使用父级作用域的变量，将子函数return出去。
+- 闭包一般的形式：函数套函数，在子函数中使用父级作用域的变量，将子函数return出去。
+- 但闭包的形式并不是固定的，其本质是：**`当前作用域块存在对父级作用域块的引用`**
 
 
 
@@ -5707,7 +5756,7 @@ console.log(arr[3]()); //3
 
 前面在讲作用域时已经在使用闭包特性了，下面再次重温一下闭包。
 
-* 以下两例代码虽然形式不同，但都是将内部作用域的变量，间接的让外部访问。
+* 以下三例代码虽然形式不同，但都实现了内部作用域的变量，间接的让外部访问。
 
 ```
 function first() {
@@ -5736,6 +5785,19 @@ first();
 console.log(func());//2
 console.log(func());//3
 console.log(func());//4
+```
+
+```
+let fuc;
+function first() {
+  let a = 0;
+  fuc = function () {
+    console.log(++a);
+  };
+}
+first();
+fuc();
+fuc();
 ```
 
 使用闭包返回数组区间元素
@@ -6064,6 +6126,32 @@ console.log(as == tfn); //false
 console.log(as === tfn); //false
 ```
 
+###### Object.is(arg1,arg2)
+
+该方法用于判断二者是否恒等，其中注意的是，`Object.is`方法在`===`的基础上，做了一些特殊情况的优化。具体来说就是+0和-0，NaN和NaN。
+
+`0===-0`
+
+```
+console.log(-0 === 0); //true
+console.log(Object.is(0, -0));//false
+```
+
+`NaN===NaN`
+
+```
+console.log(NaN == NaN); //false
+console.log(NaN === NaN); //false
+console.log(Object.is(NaN, NaN));//true
+```
+
+我们也可使用全局静态方法`isNaN`进行判断
+
+```
+let a= 1 / "s"
+console.log(isNaN(a)); //true
+```
+
 
 
 ---
@@ -6144,6 +6232,7 @@ test(as);	//[{…}]
 - 如果声明需要字符串类型，调用顺序为 `toString > valueOf`
 - 如果场景需要数值类型，调用顺序为 `valueOf > toString`
 - 声明不确定时使用 `default` ，大部分对象的 `default` 会当数值使用
+- 若对象中同时定义了`Symbol.toPrimitive`方法，则会优先执行其中对数据类型转化的处理
 
 下面的数值对象会在数学运算时转换为 `number`
 
@@ -6188,8 +6277,6 @@ console.log(+as); //1
 console.log(String(as)); //ashun
 ```
 
-
-
 ```text
 let as = {
   num: 1,
@@ -6213,7 +6300,7 @@ console.log(as+"1")	//11
 - 如果场景需要数值类型，调用顺序为 `valueOf > toString`
 
 ```text
-let hd = {
+let as = {
   name: "Ashun",
   num: 1,
   valueOf: function() {
@@ -6225,9 +6312,107 @@ let hd = {
     return this.name;
   }
 };
-console.log(hd + 5); //valueOf 4
-console.log(`${hd}阿顺`); //toString Ashun阿顺
+console.log(as + 5); //valueOf 4
+console.log(`${as}阿顺`); //toString Ashun阿顺
 ```
+
+若对象中在定义`toString/valueOf`方法的同时，又定义了`Symbol.toPrimitive`方法，则会优先执行其中对数据类型转化的处理
+
+```
+let obj = {
+  value: 123,
+  name: "Ashun",
+  toString() {
+    return this.name;
+  },
+  valueOf() {
+    return this.value;
+  },
+  [Symbol.toPrimitive]: function (hint) {
+    if (hint == "string") return "Ashuntefannao";
+    if (hint == "number") return 7;
+  },
+};
+console.log(String(obj)); //Ashuntefannao
+console.log(++obj);   //8
+```
+
+
+
+##### `==`与`===`
+
+对于==与===，我们已经不陌生了，==判定的是等式两边的值是否相同，但===是严格等于，不仅要求值相等，还要满足类型相同。
+
+但是对于使用==判断时，对于不同的场景，也涉及到了类型的转换
+
+* 等式两边类型相同，就比较值的大小
+
+```
+console.log(1 == 2) //false
+console.log("abc" == "abc") //true
+```
+
+* 等式两边为`null`|`undefined`时，返回`true`
+  * aa已定义，但是未赋值，为`null`
+  * 由于`null==undefined`得`aa == undefined`
+
+```
+let aa;
+console.log(aa == null);
+console.log(aa == undefined);
+console.log(null == undefined);
+```
+
+* 其中一方为Number，则会先转化为Number再比较
+
+```
+let obj = {
+  value: 123,
+  name: "Ashun",
+  toString() {
+    return this.name;
+  },
+  valueOf() {
+    return this.value;
+  },
+};
+
+console.log(obj == 123);
+console.log(1 == true);
+console.log(1 == "1");
+```
+
+* 判断其中一方是否是Boolean，是的话就把Boolean转换成Number，再进行比较
+
+```
+let obj = {
+  value: 1,
+  name: "Ashun",
+  toString() {
+    return this.name;
+  },
+  valueOf() {
+    return this.value;
+  },
+};
+
+console.log(true == obj);
+```
+
+###### 如何让if(a == 1 && a == 2)条件成立？
+
+其实就是上一个问题的应用，利用类型转化的过程，在其中做操作
+
+```text
+let a = {
+  num: 1,
+  valueOf() {
+    return this.num++;
+  },
+};
+console.log(a == 1 && a == 2);
+```
+
 
 
 
@@ -6406,10 +6591,10 @@ createElement({
 数组参数的使用
 
 ```text
-function hd([a, b]) {
+function as([a, b]) {
 	console.log(a, b);
 }
-hd(['阿顺', 'SHUN']);
+as(['阿顺', 'SHUN']);
 ```
 
 对象参数使用方法
@@ -6625,30 +6810,13 @@ console.log(as.hasOwnProperty("web")); //false
 
 以下方式只能够获取普通属性，不能够获取属性名为Symbol类型的属性。
 
-* `Object.getOwnPropertyNames(obj)`
 * `for/in`
+* `Object.getOwnPropertyNames(obj)`
 * `Object.keys(obj)`
 
 
 
-`Object.getOwnPropertyNames(obj)`
-
-```
-let as = { name: "阿顺", age: 18, [Symbol()]: "ashun" };
-console.log(Object.getOwnPropertyNames(as));	//["name","age"]
-```
-
-
-
-`for/in`
-
-```
-……
-for(const key in as) console.log(key);
-//name age
-```
-
-其他使用`Object的静态方法`或`Reflect`获得的属性名称，都是某**obj本身的prop**，如果使用`for/in`会遍历到`原型上`的普通属性。
+使用`Object的静态方法`或`Reflect`获得的属性名称，都是某**obj本身的prop**，如果使用`for/in`会遍历到`原型上`的普通属性。
 
 ```
 let Admin = { type: "Controller" ,[Symbol("Admin")]: "Admin"};
@@ -6657,21 +6825,33 @@ Object.setPrototypeOf(as, Admin);
 
 for (const key in as) console.log(key);	//name age type
 
-console.log(Object.getOwnPropertyNames(as));		 	//name age
-console.log(Object.keys(as));										 	//name age
+console.log(Object.getOwnPropertyNames(as));		 	//["name","age"]
+console.log(Object.keys(as));										 	//["name","age"]
 console.log(Object.getOwnPropertySymbols(as));		//[Symbol(as)]
 console.log(Reflect.ownKeys(as));									//["name", "age", Symbol(as)]
 ```
 
+当我们使用ES6的`class`声明构造函数时，就不用考虑`for/in`循环遍历原型属性的问题了
 
-
-`Object.keys(obj)`
+* 内部默认严格模式
+* class声明的方法自动添加到原型链，且自动设置各个方法的属性特征描述为`enumerable:false`
 
 ```
-……
-console.log(Object.keys(as)); //["name", "age"]
-
-for(const key of Object.keys(as)) console.log(key); //name age
+class Person {
+          constructor(options) {
+            for (let [key, val] of Object.entries(options)) {
+              this[key] = val;
+            }
+          }
+          show() {
+            return this.name;
+          }
+ 				}
+let p1 = new Person({ name: "Ashun", age: 18, type: "Controller" });
+console.log(Object.keys(p1)); ["name","age","type"]
+for (let key in p1) {
+	console.log(key);		//name,age,type	而没有show
+}
 ```
 
 
@@ -7332,7 +7512,7 @@ console.log(as.length);
 ```text
 function as(name) {}
 
-console.log(hd.constructor);
+console.log(as.constructor);
 ```
 
 下面是使用内置构造函数创建的函数
@@ -8125,7 +8305,7 @@ doms.forEach(function(ele,i){
 
 ```
 
-
+ 
 
 
 
@@ -8360,13 +8540,13 @@ console.log(
 
 * 使用原型可以解决，通过构建函数创建对象时复制多个函数造成的内存占用问题
 
-* 原型`prototype`包含 `constructor` 属性，指向构造函数
+* 原型对象`prototype`默认包含 `constructor` 属性，指向构造函数
 
-* 对象包含 `__proto__` 指向它`构造函数的prototype原型`
+* 对象具有 `__proto__` 属性，指向它`构造函数的原型对象prototype`
 
 * 构造函数的`prototype`是用来让实例对象继承的。
 
-* `prototype`是`构造器/函数`才具有的属性
+* `prototype`是`构造器/函数/class`天生具有的属性
   JavaScript内置的构造器有：Object,Number,Boolean,String,Array,RegExp,Date,Function,Error,Math,JSON等。
 
   当然，普通的函数也可以是构造函数、工厂函数。所以普通函数也具有prototype，让实例化对象来继承。
@@ -8379,8 +8559,9 @@ console.log(
 
 ```text
 let as = ["a"];
-console.log(as.concat("b"));
-console.log(as);
+console.log(as.concat("b"));	//["a","b"]
+console.log(as.concat("c",["d","e"],[[[["f"]]]]));	//["a","c","d","e",["f"]]
+console.log(as);	//["a"]
 ```
 
 默认情况下创建的对象都有：继承而来的构造函数原型
@@ -8450,10 +8631,20 @@ console.log(Object.__proto__.__proto__ == Object.prototype);
 console.log(Object.prototype.__proto__ == null);
 ```
 
+是不是感觉`Object.__proto__.__proto__ == Object.prototype`很难理解？我们可以进行拆解
+
+```
+console.log(Object.__proto__.__proto__ == Object.prototype);
+console.log(Object.__proto__ == Function.prototype);
+console.log(Function.prototype.__proto__ == Object.prototype);
+```
+
 下面是原型关系分析，与方法继承的示例
 
 * 实例对象，只有一个`__proto__`接口，用于访问构造函数的`prototype`
 * 而`函数/构造函数`都有两个原型接口：`prototype`用于让实例对象继承、`__proto__`用于让自身继承构造自己的构造函数的`prototype`
+
+
 
 <img src="study1.assets/Prototype/prototype_2.png" alt="prototype_2" style="zoom: 60%;" />
 
@@ -8550,7 +8741,7 @@ console.log(as.constructor == User);
 
 ##### setPrototypeOf
 
-* 使用`Object.setPrototypeOf(sub,sup)`，将`sub`的原型设置为`sup`
+* 使用`Object.setPrototypeOf(sub,sup)`，将`sub`的父级原型对象设置为`sup`
 
   ```
   let a = {};
@@ -8581,9 +8772,9 @@ console.log(as.constructor == User);
 
 ##### Object.create
 
-使用`Object.create(sup,{desc…})`在创建对象时设置新对象的原型对象。
+使用`Object.create(sup,{desc…})`在创建对象时设置新对象的父级原型。
 
-* 参数1：设置新对象的原型
+* 参数1：设置新对象的父级原型
 * 参数2：为新对象配置属性，以属性描述的形式，相当于`Object.defineProperties`的形式。
 
 
@@ -8663,7 +8854,7 @@ console.log(b instanceof C);
 
 使用`isPrototypeOf`检测一个对象是否是另一个对象的原型链中
 
-* `a.isPrototypeOf(b)`检测a是否在b的原型链上
+* `a.isPrototypeOf(b)`检测a对象是否在b的原型链上
 
 ```text
 const a = {};
@@ -8677,6 +8868,9 @@ console.log(b.isPrototypeOf(a)); //true
 console.log(c.isPrototypeOf(a)); //true
 console.log(c.isPrototypeOf(b)); //true
 console.log(Object.prototype.isPrototypeOf({})); //true
+
+let num = new Number(1);
+console.log(Object.prototype.isPrototypeOf(num));
 ```
 
 
@@ -8753,7 +8947,7 @@ console.log(Object.keys(as));//["name"]
 
 使用 `call` 或 `apply` 可以借用其他原型方法完成功能。
 
-下面的xj对象不能使用`max`方法，但可以借用 hd 对象的原型方法
+下面的shun对象不能使用`max`方法，但可以借用 as 对象的原型方法
 
 ```text
 let as = {
@@ -8963,7 +9157,7 @@ User.prototype = {
 console.log(User.prototype); // {constructor: ƒ, show: ƒ}
 ```
 
-对象的原型引用构造函数的原型对象，是在创建对象时确定的，当构造函数原型对象改变时会影响后面创建的实例对象。
+实例对象的原型引用构造函数的原型对象，是在创建对象时确定的，当构造函数原型对象改变时会影响后面创建的实例对象。
 
 ```text
 function User() {}
@@ -8975,7 +9169,7 @@ User.prototype = {
 	constructor:User,
   name: "阿顺"
 };
-const obj2 = new hd();
+const obj2 = new User();
 console.dir(obj2.name); //阿顺
 ```
 
@@ -9695,10 +9889,10 @@ function Admin(...args) {
 }
 extend(Admin, User);
 Object.assign(Admin.prototype, Request, Credit);
-let hd = new Admin("向军", 19);
-hd.show();
-hd.total(); //统计积分
-hd.ajax(); //请求后台
+let as = new Admin("阿顺", 18);
+as.show();
+as.total(); //统计积分
+as.ajax(); //请求后台
 ```
 
 
@@ -10805,8 +10999,8 @@ function User(...args) {
 }
 User.prototype = Object.create(User.prototype)
 User.prototype.constructor = User;
-const hd = new User("后盾人");
-console.log(hd.name);
+const as = new User("阿顺");
+console.log(as.name);
 ```
 
 若不手动配置`super(...args)`,系统会默认执行
@@ -13230,14 +13424,14 @@ console.log(txt.replace(reg, `<p>$<content></p>`));
 
 ```text
 <body>
-  <a href="https://www.houdunren.com">后盾人</a>
+  <a href="https://astfn.github.io">AshunBlog</a>
   <a href="https://www.hdcms.com">hdcms</a>
   <a href="https://www.sina.com.cn">新浪</a>
 </body>
 
 <script>
    let body = document.body;
-   let reg = /^\s*<a.+href=.*(?<link>https?:\/\/([-\w]+\.)+(?:cn|com|org|cc)).*>(?<name>.*)<\/a>\s*$/gim;
+   let reg = /^\s*<a.+href=.*(?<link>https?:\/\/([-\w]+\.)+(?:cn|com|org|cc|github|io)).*>(?<name>.*)<\/a>\s*$/gim;
     let arr = [];
     while ((exec = reg.exec(body.innerHTML))) {
       arr.push(exec["groups"]);
@@ -13517,9 +13711,9 @@ for (const iterator of str.matchAll(reg)) {
 ```text
 let sites = `https://ashunwang.com  
 https://www.sina.com.cn
-https://www.houdunren.com`;
+https://astfn.github.io`;
 
-let res = search(sites, /https?:\/\/(\w+\.)?(\w+\.)+(com|cn)/gi);
+let res = search(sites, /https?:\/\/(\w+\.)?(\w+\.)+(com|cn|io)/gi);
 console.dir(res);
 ```
 
@@ -13949,7 +14143,7 @@ console.log(str.match(reg)); //789
   const body = document.body;
   let reg = /(?<=<a.*href=(['"])).+?(?=\1)/gi;
   // console.log(body.innerHTML.match(reg));
-  body.innerHTML = body.innerHTML.replace(reg, "https://houdunren.com");
+  body.innerHTML = body.innerHTML.replace(reg, "https://Ashuntefannao.com");
 </script>
 ```
 
@@ -15399,7 +15593,7 @@ promise.then(title => {
 });
 promise.then(title => {
   title += "-Ashuntefannao";
-  console.log(hd); //阿顺特烦恼-Ashuntefannao
+  console.log(title); //阿顺特烦恼-Ashuntefannao
 });
 ```
 
@@ -16490,7 +16684,7 @@ get("new");
 async function p1() {
   return new Promise(resolve => {
     setTimeout(() => {
-      console.log("houdunren");
+      console.log("Ashuntefannao");
       resolve();
     }, 2000);
   });
@@ -16498,7 +16692,7 @@ async function p1() {
 async function p2() {
   return new Promise(resolve => {
     setTimeout(() => {
-      console.log("hdcms");
+      console.log("Ashun");
       resolve();
     }, 2000);
   });
@@ -17807,11 +18001,9 @@ let promise = new Promise((res, rej) => {
 ```
         static allSettled(PROMISEarr) {
           let results = [];
-          let isPending = true;
           return new Promise((resolve, reject) => {
             for (let promise of PROMISEarr) {
               if (promise.status == PROMISE.PENDING) {
-                isPending = true;
                 break;
               }
               let status = promise.status;
@@ -18662,14 +18854,14 @@ HTMLCollection具有namedItem方法可以按name或id属性来获取元素
 
 ```text
 <div name="app">
-  <div id="houdunren">houdunren.com</div>
-  <div name="hdcms">hdcms.com</div>
+  <div id="astfn">阿顺特烦恼</div>
+  <div name="as">ASHUN</div>
 </div>
 
 <script>
   const nodes = document.getElementsByTagName('div')
-  console.dir(nodes['hdcms']);
-  console.dir(nodes.houdunren)
+  console.dir(nodes['as']);
+  console.dir(nodes.astfn)
 </script>
 ```
 
@@ -18957,7 +19149,7 @@ getElementById只能通过document访问，不能通过元素读取拥有ID的�
 </div>
 <script>
   const app = document.getElementById('app')
-  const node = app.getElementById('hdcms') //app.getElementById is not a function
+  const node = app.getElementById('as') //app.getElementById is not a function
   console.log(node)
 </script>
 ```
@@ -21215,7 +21407,7 @@ addEventListener的第三个参数为定制的选项，可传递object或boolean
 | ------- | ---------- | ------------------------------------------------------------ |
 | once    | true/false | 只执行一次事件                                               |
 | capture | true/false | 事件是在捕获/冒泡哪个阶段执行，true:捕获阶段 false:冒泡阶段，默认为false |
-| passive | true/false | 声明事件里不会调用 `preventDefault()`，可以减少系统默认行为的等待 |
+| passive | true/false | 声明事件里不会判断 `preventDefault()`，可以减少系统默认行为的等待 |
 
 传递Boolean时
 
@@ -21303,6 +21495,20 @@ addEventListener的第三个参数为定制的选项，可传递object或boolean
     )
 </script>
 ```
+
+`passive`选项:   声明事件里不会判断 `preventDefault()`，可以减少系统默认行为的等待
+
+很多移动端的页面都会监听 touchstart 等 touch 事件，像这样：
+
+```
+document.addEventListener("touchstart", function(e){
+    ... // 浏览器不知道这里会不会有 e.preventDefault()
+})
+```
+
+由于 touchstart 事件对象的 cancelable 属性为 true，也就是说它的默认行为可以被监听器通过 preventDefault() 方法阻止，那它的默认行为是什么呢，通常来说就是滚动当前页面（还可能是缩放页面），如果它的默认行为被阻止了，页面就必须静止不动。但浏览器无法预先知道一个监听器会不会调用 preventDefault()，它能做的只有等监听器执行完后再去执行默认行为，而监听器执行是要耗时的，有些甚至耗时很明显，这样就会导致页面卡顿。即便监听器是个空函数，也会产生一定的卡顿，毕竟空函数的执行也会耗时。
+
+
 
 
 
@@ -21899,7 +22105,7 @@ window.unload事件在文档资源被卸载时执行，在beforeunload后执行
 ```text
 //文档被关闭时，在localStorage中存储用户信息
 window.addEventListener('unload', function (e) {
-  localStorage.setItem('name', 'houdunren')
+  localStorage.setItem('name', 'Ashun')
 })
 ```
 
@@ -22139,19 +22345,19 @@ xhr.send(body);
 * 当传递的参数为form表单形式的数据，则需要设置`Content-type:application/x-www-form-urlencoded`
 
   ```
-        let xhr = new XMLHttpRequest();
-        xhr.open("post", "http://127.0.0.1:5500/test");
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send("name=Ashun");
+  let xhr = new XMLHttpRequest();
+  xhr.open("post", "http://127.0.0.1:5500/test");
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.send("name=Ashun");
   ```
 
 * 若传递的参数为json字符串，则需要设置`Content-type:application/json`
 
   ```
-        let xhr = new XMLHttpRequest();
-        xhr.open("post", "http://127.0.0.1:5500/test");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify({ name: "Ashun" }));
+  let xhr = new XMLHttpRequest();
+  xhr.open("post", "http://127.0.0.1:5500/test");
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify({ name: "Ashun" }));
   ```
 
   
@@ -22220,10 +22426,10 @@ xhr.send(body);
 当请求完毕后，会自动执行该函数。
 
 ```
-   xhr.onload = () => {
-        console.log(xhr.getAllResponseHeaders());
-        console.log(xhr.responseText);
-      };
+xhr.onload = () => {
+  console.log(xhr.getAllResponseHeaders());
+  console.log(xhr.responseText);
+};
 ```
 
 ##### onerror
@@ -22231,10 +22437,10 @@ xhr.send(body);
 当请求产生错误时，会自动执行该函数
 
 ```
- xhr.onerror = () => {
-        console.log(xhr.status);
-        console.log("请求失败");
-      };
+xhr.onerror = () => {
+  console.log(xhr.status);
+  console.log("请求失败");
+};
 ```
 
 
@@ -22244,16 +22450,16 @@ xhr.send(body);
 当xhr状态码改变时，自动回调。 可以结合xhr、HTTP状态码，对请求是否成功做出判断。
 
 ```
-      xhr.onreadystatechange = () => {
-      	//请求结束，并且成功
-        if (xhr.readyState == 4 && xhr.status === 200) { 
-          console.log(xhr.responseText);
-        } else if (xhr.status == 404) {
-          console.log("请求失败");
-        }	else if(xhr.status == 500){
-          console.log("服务器内部错误")
-        }
-      };
+xhr.onreadystatechange = () => {
+  //请求结束，并且成功
+  if (xhr.readyState == 4 && xhr.status === 200) { 
+    console.log(xhr.responseText);
+  } else if (xhr.status == 404) {
+    console.log("请求失败");
+  }	else if(xhr.status == 500){
+    console.log("服务器内部错误")
+  }
+};
 ```
 
 
@@ -22326,14 +22532,14 @@ FormData对象，会自动将传入的表单Dom中的数据，转化为正确的
 * 若直接接收服务器返回的引用类型数据，则为JSON String
 
 ```
-      let xhr = new XMLHttpRequest();
-      xhr.open("post", "/test");
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(JSON.stringify({ name: "Ashun" }));
-      xhr.onload = function () {
-        console.log(typeof xhr.responseText, xhr.responseText);
-      };
-      //结果： string { "name": "Ashun" }
+let xhr = new XMLHttpRequest();
+xhr.open("post", "/test");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.send(JSON.stringify({ name: "Ashun" }));
+xhr.onload = function () {
+  console.log(typeof xhr.responseText, xhr.responseText);
+};
+//结果： string { "name": "Ashun" }
 ```
 
 * 可以判断响应头信息，返回对应的数据
@@ -22387,70 +22593,69 @@ app.post("/test", (req, res) => {
 还要根据服务器返回不同类型的结果进行判断，正确提交给外部。
 
 ```
-      function ajax(preset) {
-        let options = Object.assign(
-          {
-            type: "get",
-            url: "",
-            data: {},
-            header: {
-              ["Content-Type"]: "application/x-www-form-urlencoded",
-            },
-            success: (result, xhr) => console.log(result),
-            error: (xhr) => console.log(xhr.status),
-          },
-          preset
-        );
-        //数据拼接
-        let queryStr = Object.entries(options.data)
-          .map(([key, val]) => `${key}=${val}`)
-          .join("&");
-				
-				//请求处理
-        const xhr = new XMLHttpRequest();
-        if (options.type == "get") {
-          xhr.open(options.type, `${options.url}?${queryStr}`);
-          xhr.send();
-        }
-        if (options.type == "post") {
-          xhr.open(options.type, options.url);
-          //设置header
-          Object.entries(options.header).forEach(([prop, val]) => {
-            xhr.setRequestHeader(prop, val);
-          });
-          let contentType = options.header["Content-Type"];
-          //根据请求头信息，判断发送数据的形式
-          contentType.includes("json")
-            ? xhr.send(JSON.stringify(options.data))
-            : xhr.send(queryStr);
-        }
-        xhr.onload = () => {
-          //根据响应头信息，返回对应类型的数据
-          let isJson = xhr.getResponseHeader("Content-Type").includes("json");
-          let result = isJson ? JSON.parse(xhr.responseText) : xhr.responseText;
-          //根据HTTP状态码，执行不同的callback
-          xhr.status == 200 ? options.success(result, xhr) : options.error(xhr);
-        };
-      }
-
+function ajax(preset) {
+  let options = Object.assign(
+    {
+      type: "get",
+      url: "",
+      data: {},
+      header: {
+        ["Content-Type"]: "application/x-www-form-urlencoded",
+      },
+      success: (result, xhr) => console.log(result),
+      error: (xhr) => console.log(xhr.status),
+    },
+    preset
+  );
+  //数据拼接
+  let queryStr = Object.entries(options.data)
+    .map(([key, val]) => `${key}=${val}`)
+    .join("&");
+  
+  //请求处理
+  const xhr = new XMLHttpRequest();
+  if (options.type == "get") {
+    xhr.open(options.type, `${options.url}?${queryStr}`);
+    xhr.send();
+  }
+  if (options.type == "post") {
+    xhr.open(options.type, options.url);
+    //设置header
+    Object.entries(options.header).forEach(([prop, val]) => {
+      xhr.setRequestHeader(prop, val);
+    });
+    let contentType = options.header["Content-Type"];
+    //根据请求头信息，判断发送数据的形式
+    contentType.includes("json")
+      ? xhr.send(JSON.stringify(options.data))
+      : xhr.send(queryStr);
+  }
+  xhr.onload = () => {
+    //根据响应头信息，返回对应类型的数据
+    let isJson = xhr.getResponseHeader("Content-Type").includes("json");
+    let result = isJson ? JSON.parse(xhr.responseText) : xhr.responseText;
+    //根据HTTP状态码，执行不同的callback
+    xhr.status == 200 ? options.success(result, xhr) : options.error(xhr);
+  };
+}
 ```
 
 实例测试
 
 ```
-      ajax({
-        type: "post",
-        url: "test",
-        header: {
-          ["Content-Type"]: "application/json",
-        },
-        data: {
-          name: "Ashun",
-        },
-        success: (res, xhr) => {
-          console.log(res, xhr.status);
-        },
-      });
+ajax({
+  type: "post",
+  url: "test",
+  header: {
+    ["Content-Type"]: "application/json",
+  },
+  data: {
+    name: "Ashun",
+  },
+  success: (res, xhr) => {
+    console.log(res, xhr.status);
+  },
+});
 ```
 
 
@@ -22521,19 +22726,19 @@ fetch("/test").then((result) => {
 - 发送的JSON类型需要设置请求头为 `application/json;charset=utf-8`
 
 ```text
-      async function post() {
-        let response = await fetch("/test", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
-          body: JSON.stringify({ name: "阿顺", title: "Ashuntefannao" }),
-        });
-        if (response.ok) {
-          let result = await response.json();
-          console.log(result);
-        }
-      }
+async function post() {
+  let response = await fetch("/test", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({ name: "阿顺", title: "Ashuntefannao" }),
+  });
+  if (response.ok) {
+    let result = await response.json();
+    console.log(result);
+  }
+}
 ```
 
 **后台响应**
