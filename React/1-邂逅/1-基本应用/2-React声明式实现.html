@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- crossorigin 配置了该属性，若CDN引入的script脚本本身出现错误，就能够在控制台看到对应报错信息 -->
+
+    <!-- 若要在script标签中使用jsx，必须配置 type="text/babel" 才能够解析jsx-->
+    <script type="text/babel">
+      //声明式编程
+      let app = document.getElementById("app");
+
+      let massage = "Hello world";
+      function change() {
+        render();
+        massage = "Hello React!";
+      }
+      function render() {
+        ReactDOM.render(
+          <div>
+            <h2>{massage}</h2>
+            <button onClick={change}>click</button>
+          </div>,
+          app
+        );
+      }
+      render();
+    </script>
+  </body>
+</html>
