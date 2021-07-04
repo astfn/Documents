@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- DOM结构 -->
+    <div id="app"></div>
+    <!-- 相关依赖 -->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- 使用 -->
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            message: ["张三", "李四"],
+            // message:["nihao","haha"].join().replace(",","")
+            // message:1,
+            // message:"1",
+            //message:null,
+            // message:undefined,
+            // message:true,
+            // message:[true,null]
+            // message:{}
+          };
+        }
+        render() {
+          return (
+            <div>
+              <h2 style={{ color: "white", backgroundColor: "black" }}>
+                {this.state.message}
+              </h2>
+              <button onClick={this.changeMessage}>click</button>
+              <ul>
+                {this.state.message.map((v, key) => (
+                  <li key={key}>{v}</li>
+                ))}
+              </ul>
+            </div>
+          );
+        }
+        changeMessage = () => {
+          this.setState({
+            message: ["Ashun", "tefannao"],
+          });
+        };
+      }
+
+      let app = document.querySelector("#app");
+      ReactDOM.render(<App />, app);
+    </script>
+  </body>
+</html>
