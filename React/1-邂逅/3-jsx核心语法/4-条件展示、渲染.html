@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>条件渲染</title>
+  </head>
+  <body>
+    <!-- rootDom -->
+    <div id="app"></div>
+    <!-- 相关依赖 -->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- react -->
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            message: "欢迎登陆",
+            isLogin: false,
+            maxBoxSty: { backgroundColor: "#aaa" },
+          };
+        }
+        /* 
+        
+          条件展示
+        */
+        // render() {
+        //   // // 方案1;
+        //   // let { message, isLogin, maxBoxSty } = this.state;
+        //   // let btnContent = "登录",
+        //   //   hello = "欢迎Ashun!";
+        //   // if (isLogin) {
+        //   //   message = "登陆成功";
+        //   //   btnContent = "退出";
+        //   // } else {
+        //   //   hello = false;
+        //   // }
+        //   // return (
+        //   //   <div id="maxBox" style={maxBoxSty}>
+        //   //     <h2>{message}</h2>
+        //   //     <button
+        //   //       onClick={() => {
+        //   //         this.changeLogin();
+        //   //       }}
+        //   //     >
+        //   //       {btnContent}
+        //   //     </button>
+        //   //     <hr />
+        //   //     <strong>{hello}</strong>
+        //   //   </div>
+        //   // );
+        //   // // 方案2;
+        //   // let { message, isLogin, maxBoxSty } = this.state;
+        //   // return (
+        //   //   <div id="maxBox" style={maxBoxSty}>
+        //   //     <h2>{(message = isLogin ? "登陆成功" : message)}</h2>
+        //   //     <button
+        //   //       onClick={() => {
+        //   //         this.changeLogin();
+        //   //       }}
+        //   //     >
+        //   //       {!isLogin ? "登录" : "退出"}
+        //   //     </button>
+        //   //     <hr />
+        //   //     <strong>{isLogin && "欢迎Ashun!"}</strong>
+        //   //   </div>
+        //   // );
+        // }
+        /* 
+        
+            条件渲染
+        */
+        render() {
+          // // 方案1;
+          let { message, isLogin, maxBoxSty } = this.state;
+          let btnContent = "登录",
+            hello;
+          if (isLogin) {
+            message = "登陆成功";
+            btnContent = "退出";
+            hello = <strong>"欢迎Ashun!"</strong>;
+          }
+          return (
+            <div id="maxBox" style={maxBoxSty}>
+              <h2>{message}</h2>
+              <button
+                onClick={() => {
+                  this.changeLogin();
+                }}
+              >
+                {btnContent}
+              </button>
+              <hr />
+              {hello}
+            </div>
+          );
+          // // 方案2;
+          // let { message, isLogin, maxBoxSty } = this.state;
+          // return (
+          //   <div id="maxBox" style={maxBoxSty}>
+          //     <h2>{(message = isLogin ? "登陆成功" : message)}</h2>
+          //     <button
+          //       onClick={() => {
+          //         this.changeLogin();
+          //       }}
+          //     >
+          //       {!isLogin ? "登录" : "退出"}
+          //     </button>
+          //     <hr />
+          //     {isLogin && <strong>"欢迎Ashun!"</strong>}
+          //   </div>
+          // );
+        }
+        changeLogin() {
+          this.setState({
+            isLogin: !this.state.isLogin,
+          });
+        }
+      }
+      let app = document.getElementById("app");
+      ReactDOM.render(<App />, app);
+    </script>
+  </body>
+</html>

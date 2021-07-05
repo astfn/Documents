@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>条件渲染</title>
+  </head>
+  <body>
+    <!-- rootDom -->
+    <div id="app"></div>
+    <!-- 相关依赖 -->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- react -->
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            isLogin: false,
+          };
+        }
+        render() {
+          // 方案2;
+          let { isLogin } = this.state;
+          function vShow() {
+            return { display: !isLogin && "none" };
+          }
+          return (
+            <div id="maxBox">
+              <button
+                onClick={() => {
+                  this.changeLogin();
+                }}
+              >
+                Login
+              </button>
+              <hr />
+              <strong style={vShow()}>"欢迎Ashun!"</strong>
+            </div>
+          );
+        }
+        changeLogin() {
+          this.setState({
+            isLogin: !this.state.isLogin,
+          });
+        }
+      }
+      let app = document.getElementById("app");
+      ReactDOM.render(<App />, app);
+    </script>
+  </body>
+</html>
