@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      table {
+        border: 2px solid #eee;
+        /* border-collapse:collapse; */
+      }
+      tr,
+      td {
+        border: 1px solid #ddd;
+      }
+      td,
+      th {
+        padding: 10px 13px;
+      }
+      th {
+        border: 1px solid #eee;
+        background-color: #ddd;
+      }
+      tr:nth-of-type(2n) {
+        background-color: #eee;
+      }
+      button {
+        padding: 2px 5px;
+        margin: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- RootDOM -->
+    <div id="app"></div>
+    <!-- 相关依赖 -->
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- React编写 -->
+    <script src="./format-utils.js"></script>
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            test: "Ashuntefannao",
+            headers: ["书籍名称", "出版日期", "价格", "购买数量", "操作"],
+            course: [
+              {
+                id: "001",
+                name: "算法导论",
+                date: "2006-9",
+                price: 10,
+                num: 1,
+              },
+              {
+                id: "002",
+                name: "数据结构",
+                date: "2006-2",
+                price: 10,
+                num: 1,
+              },
+              {
+                id: "003",
+                name: "你不知道的JavaScript",
+                date: "2008-10",
+                price: 10,
+                num: 1,
+              },
+              {
+                id: "004",
+                name: "编程珠玑",
+                date: "2009-8",
+                price: 10,
+                num: 1,
+              },
+              {
+                id: "005",
+                name: "代码大全",
+                date: "2006-3",
+                price: 10,
+                num: 1,
+              },
+            ],
+          };
+        }
+        createHeader() {
+          let { headers } = this.state;
+          return (
+            <thead>
+              <tr>
+                <th></th>
+                {headers.map((v, i) => (
+                  <th key={i}>{v}</th>
+                ))}
+              </tr>
+            </thead>
+          );
+        }
+        createBody() {
+          let { course } = this.state;
+          return (
+            <tbody>
+              {course.map((row, index) => {
+                return (
+                  <tr key={row.id}>
+                    <td>{index + 1}</td>
+                    <td>{row.name}</td>
+                    <td>{row.date}</td>
+                    <td>{showPrice(formatPrice(row.price))}</td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          this.changeCount(row.id, "sub");
+                        }}
+                        disabled={this.isDisable(row.num)}
+                      >
+                        -
+                      </button>
+                      {row.num}
+                      <button
+                        onClick={() => {
+                          this.changeCount(row.id, "add");
+                        }}
+                      >
+                        +
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          this.delete(row.id);
+                        }}
+                      >
+                        移除
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          );
+        }
+
+        Null() {
+          let { course, headers } = this.state;
+          let colspan = headers.length + 1;
+          if (course.length == 0) {
+            return (
+              <tbody>
+                <tr>
+                  <td colSpan={colspan}>
+                    <h1>购物车为空~</h1>
+                  </td>
+                </tr>
+              </tbody>
+            );
+          }
+        }
+        render() {
+          return (
+            <main>
+              <h1>{this.state.test}</h1>
+              <table>
+                {this.createHeader.call(this)}
+                {this.createBody.call(this)}
+                {this.Null()}
+              </table>
+              <h2>总价钱:{this.getSum()}</h2>
+            </main>
+          );
+        }
+        /*操作函数*/
+        changeCount(id, operation) {
+          let { course } = this.state;
+          let newCourse = course.map((v) => {
+            if (v.id == id) {
+              operation == "add" && v.num++;
+              operation == "sub" && v.num--;
+            }
+            return v;
+          });
+          this.setState({
+            course: newCourse,
+          });
+        }
+
+        isDisable(num) {
+          return num > 1 ? false : true;
+        }
+        delete(id) {
+          let { course } = this.state;
+          let newCourse = course.filter((v) => v.id != id);
+          this.setState({
+            course: newCourse,
+          });
+        }
+        getSum() {
+          let { course } = this.state;
+          let sum = course.reduce(
+            (pre, val) => (pre += val.num * val.price),
+            0
+          );
+          return showPrice(formatPrice(sum));
+        }
+      }
+      let app = document.getElementById("app");
+      ReactDOM.render(<App />, app);
+    </script>
+  </body>
+</html>
