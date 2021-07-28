@@ -2,7 +2,7 @@
 
 ## JSX是什么
 
-前面我们介绍了`jsx`是`React.createElement`语法糖，但实际上`jsx`也是一个表达式，在编译后，JSX表达式会变成JavaScript对象，通过打印也能够看到是`Object`。
+前面我们介绍了`jsx`是`React.createElement`语法糖，但实际上`jsx`也是一个表达式，在编译后，JSX表达式会变成JavaScript对象（虚拟DOM），通过打印也能够看到是`Object`。
 
 * 可以在 if 语句或 for循环中使用JSX
 * 可以将它赋值给变量

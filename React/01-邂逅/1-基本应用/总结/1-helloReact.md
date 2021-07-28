@@ -64,14 +64,14 @@ button.addEventListener("click", () => {
 
 ```
 let app = document.querySelector("#app");
-let vdom = React.create("div",{class:"box"},"hello react");
+let vdom = React.createElement("div",{class:"box"},"hello react");
 ReactDOM.render(vdom,app);
 ```
 
 当创建一个元素时，很简单，但如果涉及到元素的嵌套呢？
 
 ```
-let vdom = React.create("div",{class:"box"},React.create("span",{},"hello react");
+let vdom = React.crecreateElementate("div",{class:"box"},React.createElement("span",{},"hello react");
 ReactDOM.render(vdom,app);
 ```
 
