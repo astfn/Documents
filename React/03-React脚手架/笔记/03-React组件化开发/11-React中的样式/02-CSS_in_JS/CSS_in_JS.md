@@ -153,9 +153,32 @@ export default class Home extends PureComponent {
 
 ### 使用注意点
 
-（样式权重问题导致的样式覆盖）
+**CSS权重问题导致的样式覆盖**
 
-解决：
+* 一般情况下，使用`styled-components`不会导致样式覆盖，因为会自动生成**唯一**的class类名。
+* 但个别情况，可能会产生样式覆盖（CSS权重）
+
+例如在 App.js 中编写了样式：
+
+```
+#app .banner{
+	……
+}
+```
+
+在其子组件Home.js中，使用`styled-components`编写了样式，最终生成唯一类名：
+
+```
+.BxUimo .banner{
+	……
+}
+```
+
+但是`id选择器`的权重大于`class选择器`，就会导致样式覆盖。
+
+**解决：**
+
+我们可以把 Home.js 中的 banner，单独使用`styled-components`生成一个新的组件，再进行使用，这样就会对 banner 生成一个唯一的类名，不会与`#app .banner`冲突。
 
 ## 语法详解
 
