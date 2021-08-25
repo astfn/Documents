@@ -392,7 +392,7 @@ export default class TransitionGroupAnimate extends PureComponent {
 
 1. 将多个`CSSTransition`动画组件，包裹在`TransitionGroup`中
 2. 并且此时在应用`CSSTransition`时，有一些注意点：
-   * 不需要配置`in`、`unmountOnExit`属性，因为此时是动态展示列表元素并执行动画，不涉及退场
+   * **不需要配置**`in`、`unmountOnExit`**属性**，**当列表元素被移除时，会自动执行离场动画**
 
 **示例**
 
@@ -419,4 +419,96 @@ render() {
 }
 ……
 ```
+
+### 关于key的绑定
+
+#### 正确操作
+
+上述案例只涉及到了列表元素的添加，现在我们来体验一下列表元素移除时动画展示的情况。
+
+* 添加`removeItem`方法，并为每个元素添加按钮，绑定该方法。
+* 保持`key`的一致性
+  * 上文中是直接使用`index`绑定 key 的，由于没有涉及元素的移除，所以目前是没有问题的，但我们知道，使用`index`绑定key是一个错误的做法，这样不能保持key的一致性。
+  * 基于上文案例，即使使用`item`绑定key，也不能保持key的一致性，因为每次添加的元素内容都一样。所以本案列修改了`addUser`方法，使每次追加的内容不同，从而保持key的一致性。
+
+做了以上操作，动画展示无误：
+
+<img src="react-transition-group.assets/008.gif" alt="008" style="zoom:80%;" />
+
+```
+……
+export default class TransitionGroupAnimate extends PureComponent {
+  constructor() {
+    super();
+    this.state = { users: ["Ashun", "SHUN"] };
+  }
+  render() {
+    return (
+      <StyledWrapper>
+        <TransitionGroup>
+          {this.state.users.map((item, index) => {
+            return (
+              <CSSTransition key={item} classNames="H2" timeout={800} appear>
+                <div>
+                  <p>{item}</p>{" "}
+                  <button onClick={() => this.removeItem(index)}>-</button>{" "}
+                </div>
+              </CSSTransition>
+            );
+          })}
+        </TransitionGroup>
+        <button onClick={() => this.addUser()}>addUser</button>
+      </StyledWrapper>
+    );
+  }
+  addUser() {
+    let newUsers = [...this.state.users];
+    let id = Date.now().toString().substr(-5, 5);
+    newUsers.push(`ASHUN${id}`);
+    this.setState({ users: newUsers });
+    console.log(this.state.users);
+  }
+  removeItem(index) {
+    let newUsers = [...this.state.users];
+    newUsers.splice(index, 1);
+    this.setState({ users: newUsers });
+  }
+}
+```
+
+#### BUG出现
+
+但如果，我们没有保持 key 的一致性，使用`index`绑定 key，会不会影响动画呢？
+
+* 虽然移除的元素是正确的，但目标元素并没有执行离场动画，每次都是最后一个元素执行离场动画
+
+<img src="react-transition-group.assets/009.gif" alt="009" style="zoom:80%;" />
+
+```
+……
+<CSSTransition key={index} classNames="H2" timeout={800} appear>
+……
+```
+
+#### 原因分析
+
+从代码层面上看来，原因很简单，就是key值没有保持唯一性，但从结果来看，为什么每次都是最后一个元素执行离场动画？
+
+​	其实这就涉及到React内部 virtual DOM tree 的比较了，当状态发生变更时，会触发更新机制，此时会产生一个新的虚拟DOM树，并与旧的虚拟DOM树进行比较，React采用的比较方式是从左到右依次比较，而Vue是从两端到中间进行比较。比较的过程的核心就是 diff 算法。
+
+​	我们来模拟一下 React 内部的比较过程，由于我们绑定了 key ，所以会直接比较 key 值：
+
+* 若前后key值不变，则继续应用旧的元素，反之进行销毁，重新创建。
+* 这也是保持key唯一性的原因，如果key没有唯一性，则触发更新机制时，并没有起到性能优化的效果。
+
+```
+/* 删除item1的过程 */
+item1(key==0)	->	item2(key==0)
+item2(key==1)	->	item3(key==1)
+item3(key==2)	->  null	
+```
+
+* 新旧DOM树进行比较时，由于key绑定的是index，删除item1后，后续元素的index都会依次减一，顶替上来。
+* 因此最后一个元素的位置会产生空缺，在新DOM树中：React会认为删除的是最后一个元素
+* 所以才会出现上面的动画BUG
 
