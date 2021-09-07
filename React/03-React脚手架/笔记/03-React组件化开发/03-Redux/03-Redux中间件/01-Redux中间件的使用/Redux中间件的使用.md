@@ -599,3 +599,8 @@ function* mySaga() {
 }
 ```
 
+### 对比redux-thunk
+
+* saga的逻辑处理，抽离的很干净，不会耦合在 actionCreators.js 中
+* 并且 saga 不会破坏 redux 中原生的 dispatch 方法，而 redux-thunk 对其做了更改，让dispatch能够派遣action函数。
+
