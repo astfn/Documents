@@ -562,7 +562,7 @@ export default class Category extends PureComponent {
 
 * `普通组件`需要通过react-router提供的`withRouter`高阶组件处理。
 * 且外部使用该`普通组件`标签时，需要被`BrowserRouter/HashRouter`包裹
-  * 若该`普通组件`内部，原来已经使用了`BrowserRouter/HashRouter`，则直接删掉即可，因为外部使用该组件时，在最外层包裹了。
+  * 若该`普通组件`内部，原来已经使用了`BrowserRouter/HashRouter`，则直接删掉即可，因为外部使用该组件时，已在最外层包裹了。
 
 **案例体验**
 
@@ -821,6 +821,21 @@ export default class Detail extends PureComponent {
 效果展示：
 
 <img src="react-router的使用.assets/015.png" alt="015" style="zoom:80%;" />
+
+#### 手动跳转传参
+
+前面我们还讲解了如何[手动跳转](##手动跳转)，分为两种情况：
+
+1. 通过react-router跳转的组件
+2. 普通组件
+
+但无论是哪种组件，最终都是通过`this.props.history`提供的API操作路由。
+
+<img src="react-router的使用.assets/016.png" alt="016" style="zoom:80%;" />
+
+* 通过打印结果可以发现，能够实现路由跳转的`push`、`replace`方法，都可接收第二个参数，就是跳转过程中传递的数据。
+
+* 在跳转后的目标组件中，就可以通过`this.props.location.state`获取传递的数据。
 
 ## 小总结
 
