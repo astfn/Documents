@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <title>1 声明、el、data</title>
+  </head>
+  <body>
+    <strong id="list">
+      {{hello}}<br />
+      {{news}}<br />
+      {{login}}<br />
+      {{dologin}}<br />
+    </strong>
+
+    <script>
+      //声明Vue类，参数为一个对象{}，对象内部有el，data固定属性
+      let data = {
+        //data即数据，整体是个对象，存储数据，这些数据可以写死，也可以来自请求
+        hello: "你好 vue，很高兴认识你！",
+        news: "新闻",
+        login: "登录",
+        dologin: "注册",
+      };
+
+      const vue = new Vue({
+        el: "#list", //el即element, 这个属性代表 绑定对应id的元素
+        data,
+      });
+      /*
+      实现了数据管理和界面管理的分离，并且形式简便
+      原生js 如果要用js代码渲染dom数据
+      首先需要定义变量存储数据
+      然后获取dom
+      然后给dom赋值
+      管理起来很不方便
+      这种【命令式编程】很麻烦，每次都需要固定的套路。
+      而vue【声明式编程】就很方便
+      */
+
+      /*
+      Vue 实例还提供了实例属性与方法。它们都有前缀 $，以便与用户自定义的属性区分开来*/
+
+      console.log(vue.$el === document.querySelector("#list"));
+      //Vue类参数对象中的el属性，就是对应绑定的dom
+      console.log(vue.el === document.querySelector("#list"));
+      console.log(vue.$data === data);
+      console.log(vue.data === data);
+      console.log("Vue类参数对象中的el属性，就是对应绑定的dom");
+      console.log(vue.$el);
+      console.log(vue.massage);
+    </script>
+  </body>
+</html>
