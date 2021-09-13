@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2 全局组件和子组件的区别</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <style>
+      .component {
+        background-color: pink;
+        margin: 50px;
+      }
+      #d2 {
+        background-color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="d1">
+      <my-cpt></my-cpt>
+      <!-- 属于d2的局部组件不能够在其他Vue实例内使用 -->
+      <!-- <my-cpt1></my-cpt1> -->
+    </div>
+    <div id="d2">
+      <my-cpt></my-cpt>
+      <my-cpt1></my-cpt1>
+    </div>
+
+    <script>
+      //全局组件
+      const Mycomponent = Vue.extend({
+        template: `
+     <div class="component">
+     <h1>我是Mycomponent全局组件</h1>
+     <h3>属于d2的my-cpt子组件，我不能够访问</h3>
+     </div>
+     `,
+      });
+
+      Vue.component("my-cpt", Mycomponent);
+
+      let d1 = new Vue({
+        el: "#d1",
+        data: {
+          message: "Ashuntefannao.com",
+        },
+      });
+
+      //子组件
+
+      const Mycomponent1 = Vue.extend({
+        template: `
+     <div class="component">
+      <h1>我是my-cpt子组件</h1>
+     </div>
+     `,
+      });
+
+      let d2 = new Vue({
+        el: "#d2",
+        data: {
+          message: "Ashuntefannao.com",
+        },
+        //新接触的options： components:{组件名1:组件变量1，组件名2:组件变量2，……}
+        //放在Vue实例对象内注册组件
+        components: {
+          "my-cpt1": Mycomponent1,
+        },
+        mounted() {
+          console.log(this.$children);
+        },
+      });
+
+      /*
+       全局组件，在所有Vue实例中都可以使用
+       子组件，只能在components中绑定该组件的Vue实例中使用
+              （在哪里注册，就只能在哪里使用）
+
+        【注意】：
+           在Vue实例对象内的 components：{}中 注册的组件，不用在外部注册
+          注册动作，直接在内部完成 属性名为组件名，属性值为 组件变量
+
+    
+    */
+    </script>
+  </body>
+</html>
