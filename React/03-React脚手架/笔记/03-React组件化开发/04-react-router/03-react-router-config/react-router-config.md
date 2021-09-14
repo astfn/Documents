@@ -198,6 +198,10 @@ function matchRoutes(routes, pathname,branch) {
 * 然后使用map方法遍历routes，依次创建Route组件，并根据各个route对象的配置设置各个属性，然后返回。
 * 并且扩充了映射组件的props，传入了当前route对象，因此才能够使用`this.props.route`
 
+>在源码中可以发现，render选项是优先于component的，如果配置了render选项，则会按照render的返回值渲染。
+>
+>* render选项需要配置为function，且需要return所渲染的JSX（可以用来做路由重定向）
+
 **参数**
 
 可以发现，还提供了extraProps，switchProps参数
