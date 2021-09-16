@@ -13,7 +13,7 @@
 
 ```
 import { createRef, PureComponent } from "react";
-import StyledWrapper from "./App.css"
+import StyledWrapper from "./AppStyle.js"
 
 export default class App extends PureComponent {
   constructor() {
@@ -60,7 +60,7 @@ export default class App extends PureComponent {
 }
 ```
 
-App.css
+AppStyle.js
 
 ```
 import styled from "styled-components";
