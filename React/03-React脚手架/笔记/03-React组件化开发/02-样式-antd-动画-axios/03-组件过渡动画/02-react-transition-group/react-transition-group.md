@@ -341,7 +341,7 @@ export default class App extends PureComponent {
 
 ### 问题的产生
 
-当我们循环遍历动态的渲染动画组件时，这时你会发现，动画失效了：
+当我们循环遍历动态地渲染动画组件时，这时你会发现，动画失效了：
 
 <img src="react-transition-group.assets/005.gif" alt="005" style="zoom:80%;" />
 
