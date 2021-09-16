@@ -327,10 +327,6 @@ this.setState((state, props) => {
 
 
 
-
-
-
-
 # 总结
 
 1. 直接改变state的行为，不能让页面重新渲染，React不能监听这种直接改变state的行为，需要通过setState改变，并且stateState是React.Component对象的原型方法。
@@ -344,6 +340,15 @@ this.setState((state, props) => {
    同步更新：在定时器中执行setState、原生事件处理程序中执行setState
 
    * 可同步获取更新后的数据。
+
+3. setState合并问题
+
+   * 数据合并：之所以能够单独更新某个state属性，是因为源码内使用`Object.assign`将数据合并。
+   * 多个setState操作的合并：
+     * 源码内使用`do while`循环，从队列中取出多个setState操作进行合并；
+     * 若不希望合并，则可以将第一个参数值为callback，且接收参数state，props，在callback内将更新的数据进行return。（原因是：在源码进行多个state合并时，每次遍历，若为function，则都会执行一次该函数）
+
+   
 
    
 
