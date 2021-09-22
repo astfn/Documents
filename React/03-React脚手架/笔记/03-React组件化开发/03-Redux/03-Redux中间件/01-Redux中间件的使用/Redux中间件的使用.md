@@ -195,7 +195,7 @@ export default connectStore_Detail;
 
 但这些操作：
 
-* 不能放在action中：action最终是只一个对象
+* 不能放在action中：action最终是只一个对象，即便我们在actionCreator函数中，发送网络请求并拿到数据，最后再将action对象返回，依然不会成功，因为网络请求是异步代码，return语句早已同步执行。
 * 不能放在reducer中：若在reducer中发送网络请求，则违背了纯函数的定义。
 
 我们可以使用**Redux的中间件**`redux-thunk`完成👇
