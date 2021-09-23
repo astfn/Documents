@@ -201,6 +201,10 @@ function matchRoutes(routes, pathname,branch) {
 >在源码中可以发现，render选项是优先于component的，如果配置了render选项，则会按照render的返回值渲染。
 >
 >* render选项需要配置为function，且需要return所渲染的JSX（可以用来做路由重定向）
+>
+>```
+>render: ()=>( <Redirect to="path"/> );
+>```
 
 **参数**
 
