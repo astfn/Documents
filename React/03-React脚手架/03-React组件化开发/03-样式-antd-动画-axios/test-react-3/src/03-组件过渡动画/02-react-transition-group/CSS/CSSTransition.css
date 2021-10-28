@@ -1,0 +1,29 @@
+.H2-enter,
+.H2-appear {
+  opacity: 0;
+  transform: scale(0) rotate(0deg);
+}
+.H2-enter-active,
+.H2-appear-active {
+  opacity: 1;
+  transform: scale(1) rotate(360deg);
+  transition: 800ms;
+}
+.H2-enter-done,
+.H2-appear-done {
+  opacity: 1;
+  transform: scale(1);
+}
+.H2-exit {
+  opacity: 1;
+  transform: scale(1) rotate(360deg);
+}
+.H2-exit-active {
+  opacity: 0;
+  transform: scale(0) rotate(0deg);
+  transition: 800ms;
+}
+.H2-exit-done {
+  opacity: 0;
+  transform: scale(0) rotate(0deg);
+}
