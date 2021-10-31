@@ -111,9 +111,9 @@ render(){
 
 这里就涉及到了一个this指向的问题：
 
-​	虽然在jsx中为button绑定了类中的方法，但是jsx结构最终会渲染到页面上，也就是说该方法终后会在外部调用，而不是被实例调用，因此也就访问不到message属性。
+​	虽然在 jsx 中为 button 绑定了类中的方法，但该场景其实是把`this.changeMessage`函数体赋值给了事件处理程序，当触发事件时，会直接调用该函数，而不是通过类调用，因此`this`指向`window`。
 
-​	而class中默认是`strict`模式，为了避免污染`window`，当this指向`window`时，会自动将其设置为`undefined`。这里关于class的其它特性不再赘述，可看我之前写过的文章。
+​	而class中默认是`strict`模式，为了避免污染`window`，当this指向`window`时，会自动将其设置为`undefined`。也就访问不到`setState`。这里关于class的其它特性不再赘述，可看我之前写过的文章。
 
 **解决方法有三种**：
 
