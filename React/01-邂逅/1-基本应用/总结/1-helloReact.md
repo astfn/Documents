@@ -71,11 +71,11 @@ ReactDOM.render(vdom,app);
 当创建一个元素时，很简单，但如果涉及到元素的嵌套呢？
 
 ```
-let vdom = React.crecreateElementate("div",{class:"box"},React.createElement("span",{},"hello react");
+let vdom = React.createElement("div",{class:"box"},React.createElement("span",{},"hello react");
 ReactDOM.render(vdom,app);
 ```
 
-上面知识在div中嵌套了span，代码长度就大大增加，很显然，实际开发使用`React.createElement`是有点困难的。
+上面只是在div中嵌套了span，代码长度就大大增加，很显然，实际开发使用`React.createElement`是有点困难的。
 
 所以我们可以使用 **jsx** (JavaScript XML)语法，这时就需要用到babel将jsx进行语法转化，其实最终也会将jsx转化为`React.createElement` 的形式。但这个过程不用我们来做，我们只需要使用 jsx 即可。
 
@@ -141,7 +141,7 @@ ReactDOM.render(vdom,app);
 
 但是当我们点击button后，h2内容并没有发生改变。
 
-* ReactDOM.render只执行了一次，所以也只会渲染一次，当点击时间触发后，虽然数据发生了改变，但没有使用render重新触发更新
+* ReactDOM.render只执行了一次，所以也只会渲染一次，当点击事件触发后，虽然数据发生了改变，但没有使用render重新触发更新
 * 所以我们要将`ReactDOM.render`方法封装起来，在每次数据更新时都要进行调用，才能够看到效果
 
 ### 最终代码
