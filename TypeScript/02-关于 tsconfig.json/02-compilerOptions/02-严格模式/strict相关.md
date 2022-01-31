@@ -115,3 +115,18 @@ let a: null = null;
 let b: undefined = undefined;
 ```
 
+`void` 类型变量，此时最多只能赋值为 undefined
+
+```
+let unusable: void = undefined;	// OK
+unusable = null  // Error: 不能将类型“null”分配给类型“void”。
+```
+
+```
+function returnVoidFunc(): void {
+  console.log("该函数没有任何返回值");
+  return undefined;	// OK
+  return null // Error: 不能将类型“null”分配给类型“void”。
+}
+```
+
