@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>vue生命周期</title>
+    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{message}}</h1>
+      <button ref="button" type="button" @click="changeData">changeData</button>
+    </div>
+  </body>
+  <script>
+    function topTag(msg) {
+      console.log(`——————${msg}——————`);
+    }
+    function endTag(msg, end) {
+      console.log(`——————${msg}End—————${end ? end : ""}\n\n`);
+    }
+    let vm = new Vue({
+      el: "#app",
+      render: function(createElement) {
+        return createElement("h1", "this is createElement");
+      },
+      template: `
+      <div id="newApp">
+        <h1>ASHUN</h1>
+      </div>
+      `,
+      data: {
+        message: "Vue.data数据",
+      },
+      methods: {
+        method() {
+          return "Vue.methods中方法";
+        },
+        changeData() {
+          this.message = "changed message";
+        },
+      },
+      computed: {
+        calc() {
+          return "Vue.computed中方法";
+        },
+      },
+      beforeCreate() {
+        topTag("beforeCreate");
+
+        console.log(" 访问$el:", this.$el);
+        console.log(" 访问$data:", this.$data);
+
+        endTag("beforeCreate");
+      },
+      created() {
+        topTag("created");
+
+        console.log(" 访问$el:", this.$el);
+        console.log(" 访问data:", Object.keys(this.$data));
+        console.log(" 访问data中数据:", this.$data.message);
+        console.log(" 访问methods:", this.method());
+        console.log(" 访问computed:", this.calc);
+
+        endTag("created");
+      },
+      beforeMount() {
+        topTag("beforeMount");
+        //挂载前改变数据，不会触发uptate
+        console.log("访问$el:", this.$el);
+        console.log("访问$refs:", this.$refs["button"]);
+        console.log(" 访问data:", Object.keys(this.$data));
+
+        endTag("beforeMount");
+      },
+      mounted() {
+        //由于virtualDom已经挂载到页面，在此改变数据，会触发update
+        topTag("mounted");
+
+        console.log("访问$el:", this.$el);
+        console.log("访问$refs:", this.$refs["button"]);
+        console.log(" 访问data:", Object.keys(this.$data));
+
+        endTag("mounted");
+      },
+      beforeUpdate() {
+        topTag("beforeUpdate");
+
+        //在此改变数据，会再次触发update钩子
+        // let message = "beforeUpdate 改变了 this.message";
+        // this.message = "beforeUpdate 改变了 this.message";
+        // console.log(message);
+
+        endTag("beforeUpdate");
+      },
+      updated() {
+        topTag("updated");
+        endTag("updated");
+      },
+      beforeDestroy() {
+        topTag("beforeDestroy");
+        endTag("beforeDestroy");
+      },
+      destroyed() {
+        topTag("destroyed");
+        endTag("destroyed");
+      },
+    });
+    // vm.$mount(document.querySelector("#app"));
+  </script>
+</html>
