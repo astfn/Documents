@@ -1,8 +1,6 @@
-	前面我们已经学习了 react-router 的使用。但有关路由映射关系的配置我们都是直接在react-router提供的**Route组件**中完成的，如果路由的配置很复杂，就会导致组件内部代码过于繁多，不易维护。
+	前面我们已经学习了 react-router 的使用。但有关路由映射关系的配置我们都是直接在 react-router 提供的 **Route组件** 中完成的，如果路由的配置很复杂，就会导致组件内部代码过于繁多，不易维护。
 
-​	之前学习Vue时，其路由配置是在单独的 JS 文件中处理的，我们也希望将react-router路由映射关系单独抽离出去。
-
-此时，我们可以使用**react-router-config**包，完成抽离。
+​	之前学习 Vue 时，其路由配置是在单独的 JS 文件中处理的，我们也希望将 react-router 路由映射关系单独抽离出去。此时，我们可以使用 **react-router-config** 包，完成抽离。
 
 ## 使用过程
 
@@ -17,7 +15,7 @@ yarn add react-router-config
 将路由映射关系，抽离到`src/router/index.js`
 
 * 通过一个对象数组，完成各个路由映射关系的配置。
-* 可在某个对象中，继续嵌套**routes**选项，配置该路由对应的各个子路由
+* 可在某个对象中，继续嵌套 **routes** 选项，配置该路由对应的各个子路由
 
 ```
 import Home from "../pages/Home.js";
@@ -59,10 +57,10 @@ export default routes;
 
 **App.js**
 
-​	将之前 Switch 包裹的各个 Route 配置，换成react-router-config提供的**renderRoutes功能函数，并传入抽离的routes**，即可自动完成路由配置：
+​	将之前 Switch 包裹的各个 Route 配置，换成 `react-router-config` 提供的 **renderRoutes** 功能函数，并传入抽离的 routes，即可自动完成路由配置：
 
-* renderRoutes内部其实也是使用 Switch 将各个Route进行包裹，只不过它自动帮我们完成了此过程（后文会有[源码分析](##源码分析)）
-* 由于内部使用的是Switch，所以在一些具有重复部分的patch路由配置时，要设置exact，例如上文对根路径、嵌套路由都配置了exact。避免一旦path与前面重复部分的路径相匹配：Switch就停止判断，导致后续组件不能渲染。
+* renderRoutes 内部其实也是使用 Switch 将各个 Route 进行包裹，只不过它自动帮我们完成了此过程（后文会有[源码分析](##源码分析)）
+* 由于内部使用的是 Switch，所以在一些具有重复部分的 path 路由配置时，要设置exact，例如上文对根路径、嵌套路由都配置了exact。避免一旦 path 与前面重复部分的路径相匹配：Switch 就停止判断，导致后续组件不能渲染。
 
 ```
 {renderRoutes(routes)}
@@ -78,7 +76,9 @@ export default routes;
 
 **Detail.js**
 
-​	该案例在子组件中，也需要路由跳转，我们也可以在子组件中使用renderRoutes。但值得注意的是：**必须传入对应子路由部分的配置**
+​	该案例在子组件中，也需要路由跳转，我们也可以在子组件中使用 renderRoutes 。
+
+​	但值得注意的是：**必须传入对应子路由部分的配置**
 
 你可能会写出以下代码，很显然，虽然可以使用，但有点不合适（直接通过索引访问）。
 
@@ -124,7 +124,7 @@ import routes from "../../router/detailChild.js";
 
 #### this.props.route
 
-​	但实际上，如果使用 react-router-config 管理的路由跳转组件，我们可以在路由跳转组件中通过`this.props.route`访问**当前活跃的路由对象**，因此我们可以访问到之前配置的`routes`属性，也就是该路由的子路由配置。
+​	但实际上，如果使用 react-router-config 管理的路由跳转组件，我们可以在路由跳转组件中通过`this.props.route` 访问**当前活跃的路由对象**，因此我们可以访问到之前配置的`routes`属性，也就是该路由的子路由配置。
 
 ```
 {renderRoutes(this.props.route.routes)}
@@ -134,13 +134,13 @@ import routes from "../../router/detailChild.js";
 
 ### matchRoutes
 
-实际上react-router-config还提供了一个`matchRoutes`功能函数，用于获取某个路由对象：
+实际上 react-router-config 还提供了一个 `matchRoutes` 功能函数，用于获取某个路由对象：
 
 `matchRoutes(routes, pathname)`
 
 * routes：路由对象数组
 * pathname：将要匹配的路径
-* 通过pathname，在routes中查找匹配的路由对象信息，并返回。
+* 通过 pathname，在 routes 中查找匹配的路由对象信息，并返回。
 
 例如在 Detail.js 中：
 
