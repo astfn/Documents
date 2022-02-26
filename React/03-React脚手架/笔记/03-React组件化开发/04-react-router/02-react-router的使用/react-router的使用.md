@@ -271,9 +271,18 @@ const StyledWrapper = styled.main`
 
 - 用于排除其他匹配到的组件
 - Switch将各个Route组件包裹，只要匹配到了第一个path对应的Route，后面将不再匹配。
-- 使用Switch后，就可以取消之前在Route所绑定的exact属性了。
 
-### 实例体验
+### 注意事项
+
+* 虽然使用 Switch 组件能够让路由匹配具有 **排他性**，但其对 path 的默认匹配规则，依然是 **模糊匹配** 模式。
+
+* 因此，对于父级路由来说，依然要手动配置 exact 实现严格匹配
+
+* 否则按照 Switch 的排他性，将只展示父级路由组件
+
+  因为子路由 path 包含了父级 path，若使用 Switch ，则优先匹配到父级路由 path 后，将不再继续向后匹配。造成只展示父级路由组件的状况。
+
+### 实现noMatch路由
 
 在实际开发中我们会配置**动态路由**，并且还会配置一个**noMatch**页面专门处理URL匹配不到的情况。
 
@@ -281,7 +290,7 @@ const StyledWrapper = styled.main`
 
 案例代码：
 
-* 不为Route绑定patch属性，意为任何path都匹配，因此默认情况下`noMatch`组件一直都会展示。
+* 不为Route绑定path属性，意为任何path都匹配，因此默认情况下`noMatch`组件一直都会展示。
 * 由于`/category`、`/Ashun`，都能够与动态路由`/:id`匹配，因此点击对应链接，Profile组件都会展示。
 
 ```
@@ -290,7 +299,7 @@ const StyledWrapper = styled.main`
   <NavLink to="/category"> 分类</NavLink>
   <NavLink to="/Ashun"> 我的</NavLink>
   <hr />
-  <Route path="/" component={Home} />
+  <Route exact path="/" component={Home} />
   <Route path="/category" component={Category} />
   <Route path="/:id" component={Profile} />
   <Route component={NoMatch} />
@@ -306,7 +315,7 @@ const StyledWrapper = styled.main`
 
 ```
  <Switch>
-  <Route path="/" component={Home} />
+  <Route exact path="/" component={Home} />
   <Route path="/category" component={Category} />
   <Route path="/:id" component={Profile} />
   <Route component={NoMatch} />
@@ -394,6 +403,10 @@ export default class Profile extends PureComponent {
 
 **App.js**
 
+注意：要对父级路由绑定 exact 进行严格匹配
+
+* 因为父子路由 path 具有公共部分，此时再结合 `Switch` 的排他性，将会一直展示父级路由组件（详见[Switch](##Switch)）
+
 ```
 import { PureComponent } from "react";
 import { BrowserRouter, NavLink, Route, Switch } from "react-router-dom";
@@ -417,7 +430,7 @@ export default class App extends PureComponent {
           <NavLink to="/category"> 分类</NavLink>
           <hr />
           <Switch>
-            <Route path="/" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route path="/category" component={Category} />
           </Switch>
         </BrowserRouter>
@@ -429,9 +442,8 @@ export default class App extends PureComponent {
 
 **Category.js**
 
-* 之前我们说过，由于Switch组件的特性，我们可以不为Route绑定exact属性。
-* 但嵌套路由的情况下，则需要绑定exact
-  * 因为这些路由都有公共部分，则一直能匹配到`/category`，又因为使用了`Switch`，所以会一直展示对应的组件。
+* 若希望默认展示某个子路由组件，则该子路由的 path 需要和父级路由保持一致。
+* 这样跳转到父级路由后，才能默认展示对应的子路由组件。
 
 ```
 import { PureComponent } from "react";
