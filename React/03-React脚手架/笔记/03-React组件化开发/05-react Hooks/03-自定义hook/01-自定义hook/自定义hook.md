@@ -59,8 +59,8 @@ React Hook "useEffect" is called in function "loggingLife" that is neither a Rea
 
 其实也很好理解，之前我们就一直在说，hook 的使用场景：
 
-* 只能在 **React 的函数组件**或**自定义Hook**中调用 Hook API，不要在其他 JavaScript 函数中调用。
-* 只能在**函数最外层**调用 Hook。
+* 只能在 **React 的函数组件** 或 **自定义Hook** 中调用 Hook API，不要在其他 JavaScript 函数中调用。
+* 只能在 **函数最外层** 调用 Hook。
   - 不要在循环、条件判断或者子函数中调用。
 
 报错分析：
@@ -75,14 +75,14 @@ React Hook "useEffect" is called in function "loggingLife" that is neither a Rea
 
 其实很简单，我们只需要按照合法的命名要求即可：
 
-* **自定义hook名称需要以**`use`**开头**
+* **自定义hook名称需要以 **`use` **开头**
 * 之前我们在学习原生 hook API 时，也可以发现都是以`use`开头。
 
 ---
 
-我们将`loggingLife`命名为`useLoggingLife`即可，自定义hook函数也可正常传参。
+我们将`loggingLife`命名为`useLoggingLife`即可，自定义 hook 函数也可正常传参。
 
-此时Home组件的代码只需引入我们自定义的hook：`useLoggingLife`，即可完成功能。
+此时 Home 组件的代码只需引入我们自定义的hook：`useLoggingLife`，即可完成功能。
 
 ```
 import { useLoggingLife } from "../hooks";
@@ -102,11 +102,11 @@ export default function Home(props) {
 
 ### 共享Context
 
-​	虽然 React 给我们提供了 `useContext` API，但每次使用Contex都需要不断的引入、调用`useContext`。如果有一些Context需要被大量组件共享，就代表很多组件中存在大量的、重复的`useContext`使用过程。
+​	虽然 React 给我们提供了 `useContext` API，但每次使用 Context 都需要不断的引入、调用 `useContext`。如果有一些 Context 需要被大量组件共享，就代表很多组件中存在大量的、重复的 `useContext` 使用过程。
 
 **案例体验**
 
-比如多个组件都需要使用User和Token的Context：
+比如多个组件都需要使用 User 和 Token 的 Context：
 
 App.js
 
@@ -135,7 +135,7 @@ export { UserContext, TokenContext };
 
 Home.js
 
-* 各个组件在使用user和token时都需要导入对应的Context，并且需要使用两次useContext；
+* 各个组件在使用 user 和 token 时都需要导入对应的 Context，并且需要使用两次 useContext。
 
 ```
 import { useContext } from "react";
@@ -154,7 +154,7 @@ export default function Home(props) {
 }
 ```
 
-我们可以将这些频繁使用的Context过程抽离出去，形成自定义hook：
+我们可以将这些频繁使用 Context 的过程抽离出去，形成自定义hook：
 
 ```
 import { useContext } from "react";
