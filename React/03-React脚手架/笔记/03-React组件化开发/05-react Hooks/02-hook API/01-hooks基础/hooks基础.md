@@ -163,7 +163,7 @@ export default class Test extends PureComponent {
 
 函数组件结合effect hook：
 
-* useEffect中的callback在每次完成DOM渲染操作后，都会回调执行，包括第一次组件挂载后的渲染。
+* useEffect中的callback在每次完成DOM渲染操作后，都会回调执行，包括组件第一次挂载后的渲染。
 
 ```
 import { useEffect, useState } from "react";
@@ -187,14 +187,14 @@ export default function TestEffectHook(props) {
 
 ​	通过上文可知，我们可以使用 useEffect 模拟class组件中的两个生命周期函数：`componentDidMount`、`componentDidUpdate`。
 
-​	通常我们会在组件挂载后`componentDidMount`去侦听一些事件，并且为了性能考虑，需要在**组件卸载后取消事件的侦听**。
+​	通常我们会在组件挂载后`componentDidMount`去侦听一些事件，并且为了性能考虑，需要在**组件卸载前取消事件的侦听**。
 
 实际上 useEffect 还可模拟class组件中的`componentWillUnmount`：
 
 useEffect 接收一个callbackA，我们可以在callbackA中继续返回一个回调函数callbackB，并且callbackB会在某些时机自动执行：
 
 * 组件更新后
-* 组件卸载后
+* 组件卸载前
 
 **案例体验**
 
@@ -256,14 +256,14 @@ export default function TestEffectHook(props) {
 若传入了第二个参数，则useEffect的执行时机会有一些改变：
 
 * callbackA 执行时机：组件初次挂载后、依赖项变更后。
-* callbackB 执行时机：组件卸载后。
+* callbackB 执行时机：组件卸载前。
 
 因此，如果我们想要实现上文的性能优化，完全可以在第二个参数传入空数组`[]`。
 
-因为事件的侦听，我们只希望在组件挂载后执行。取消侦听只希望在组件卸载后执行。
+因为事件的侦听，我们只希望在组件挂载后执行。取消侦听只希望在组件卸载前执行。
 
 * 而此时useEffect的第二个参数为`[]`,代表没有依赖项，因此 callbackA 只会在组件初次挂载后执行。
-* 由于传入了第二个参数，callbackB 只会在组件卸载后执行
+* 由于传入了第二个参数，callbackB 只会在组件卸载前执行
 
 <img src="hooks基础.assets/004.gif" alt="004" style="zoom:80%;" />
 
@@ -334,14 +334,14 @@ export default function TestEffectHook(props) {
 - 在React完成DOM渲染操作之后，就会自动回调；
 - 默认情况下，无论是第一次挂载，还是每次更新之后，都会执行这个callback；
 - callback还可以返回一个callbackB。
-  - 默认情况下：callbackB执行时机为 组件更新、卸载后。
+  - 默认情况下：callbackB执行时机为 组件更新后、卸载前。
 
 **参数2：[...dep]**
 
 * 整体为一个Array，各个元素代表useEffect所侦听的依赖项。
 * 如果传入了第二个参数，callback的执行时机会发生改变
   * callbackA 执行时机：组件初次挂载后、依赖项变更后。
-  * callbackB 执行时机：组件卸载后。
+  * callbackB 执行时机：组件卸载前。
 
 ### 优点
 
