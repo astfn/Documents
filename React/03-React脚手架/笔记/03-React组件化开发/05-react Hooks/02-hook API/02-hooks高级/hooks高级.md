@@ -31,7 +31,7 @@ useReducer 是一个函数，我们一般传入两个参数：
 1. reducer：用于变更state的reducer函数
 2. initState：所管理的state初始值
 
-useState调用后，返回一个Array，只包含两个元素:
+useReducer 调用后，返回一个Array，只包含两个元素:
 
 1. `state`：访问所管理state
 2. `dispatch`：是一个函数，通过该函数派遣 action ，最终交给reducer函数处理状态变更
@@ -80,9 +80,9 @@ Profile.js
 
 ​	在其他组件中也使用相同的 reducer 管理对应组件的 state，数据是不会共享的，它们只是使用了相同的 counterReducer 的函数而已。
 
-​	每次使用 useReducer 时，第二个参数（也就是所管理的state）都需要重新传入，因此useReducer可以共享reducer函数，但并不能够共享数据。
+​	每次使用 useReducer 时，第二个参数（也就是所管理的state）都需要重新传入，因此 useReducer 可以共享reducer 函数，但并不能够共享数据。
 
-**所以，useReducer只是useState的一种替代方案，并不能替代Redux。**
+**所以，useReducer 只是 useState 的一种替代方案，并不能替代 Redux。**
 
 ```
 import { useReducer } from "react";
@@ -128,7 +128,7 @@ const memorizeCallback = useCallback(callback, [...dep]);
 
 **原因分析**：
 
-​	对于本组件来说，只要状态更新，就会触发组件更新机制重新渲染，整个函数组件中的所有逻辑都会重新执行，包括 useCallback ，即便我们改变的不是useCallback 所侦听的依赖项，但组件依旧会因为状态变更而导致更新。
+​	对于本组件来说，只要状态更新，就会触发组件更新机制重新渲染，整个函数组件中的所有逻辑都会重新执行，包括 useCallback ，即便我们改变的不是 useCallback 所侦听的依赖项，但组件依旧会因为状态变更而导致更新。
 
 **案例体验**：
 
@@ -237,8 +237,8 @@ export default memo(Child);
 如何进行性能的优化呢？
 
 - useMemo返回的也是一个 memorized（记忆） 值
-  - 但与 useCallback 不同，useCallback 返回的是所传入**callback函数**的记忆值
-  - 而 useMemo 返回的是所传入**callback执行结果**的记忆值
+  - 但与 useCallback 不同，useCallback 返回的是所传入 **callback函数** 的记忆值
+  - 而 useMemo 返回的是所传入 **callback执行结果** 的记忆值
 - 在依赖项不变的情况下，所传入的callback中的业务不会重新执行（返回的值是相同的）
 
 ```
@@ -367,10 +367,10 @@ export default memo(Child);
 
 经过之前的学习我们已经熟知：
 
-- useCallback 返回的是所传入**callback函数**的记忆值
-- useMemo 返回的是所传入**callback执行结果**的记忆值
+- useCallback 返回的是所传入**callback函数** 的记忆值
+- useMemo 返回的是所传入 **callback执行结果** 的记忆值
 
-那么使用 useMemo 实现 useCallback 也非常简单，只需要让useMemo所传入的callback返回值为目标函数即可。
+那么使用 useMemo 实现 useCallback 也非常简单，只需要让 useMemo 所传入的 callback 返回值为目标**函数**即可。
 
 ```
 const memorizeCallback = useMemo(()=>callback, [...dep]);
@@ -383,25 +383,25 @@ const memorizeCallback = useMemo(()=>callback, [...dep]);
 ​	在之前的我们学习过`refs`的使用，通过为某个`DOM元素`或`class组件标签`绑定 **ref **属性，来获取对应的`DOM节点`或`组件对象`。ref 的属性值可以有三种绑定类型：
 
 1. String：后期通过`this.refs["propName"]`访问
-2. createRef：后期通过对应 state的current属性访问
-3. callback：该函数会在`目标DOM元素`或`组件`**挂载后**自动回调执行，可在其中将`ele`赋值给某个state，后期通过该state访问。
+2. createRef：后期通过对应 state 的 current 属性访问
+3. callback：该函数会在`目标DOM元素`或`组件`**挂载后**自动回调执行，可在其中将 `ele` 赋值给某个 state，后期通过该 state 访问。
 
 值得注意的是：
 
 * **不能在函数组件标签**上使用 ref 属性，因为它们没有实例。
-* 如果希望获取`函数组件`中的某个DOM元素，或其中嵌套的class组件，可通过**forwardRef **高阶组件完成 ref 的转发。
+* 如果希望获取 `函数组件` 中的某个DOM元素，或其中嵌套的class组件，可通过 **forwardRef **高阶组件完成 ref 的转发。
 
 ### 基本使用
 
-在函数组件中，我们可以通过`useRef`实现 refs 的使用，其特性与原来相同：
+在函数组件中，我们可以通过 `useRef` 实现 refs 的使用，其特性与原来相同：
 
 * 只能为某个`DOM元素`或`class组件标签`绑定 **ref **属性
-* 函数组件没有实例，因此不能再函数组件标签上使用 ref 属性
+* 函数组件没有实例，因此不能在函数组件标签上使用 ref 属性
 
 使用步骤：
 
-1. 调用`useRef`并初始化变量进行接收
-2. 为某个`DOM元素`或`class组件标签`绑定 **ref **属性
+1. 调用 `useRef` 并初始化变量进行接收
+2. 为某个 `DOM元素` 或 `class组件标签`绑定 **ref **属性
 3. 后期即可通过对应变量进行访问
 
 案例体验：
@@ -473,18 +473,23 @@ export default forwardRef(Child);
 
 ### 保留旧值
 
-​	useRef 除了能够完成某个`DOM元素`或`class组件`的访问，我们还可使用useRef不断保留某个state的旧值，该功能的实现，依赖于useRef 的一个特性：
+​	useRef 除了能够完成某个`DOM元素`或`class组件`的访问，我们还可使用 useRef 不断保留某个 state 的旧值，该功能的实现，依赖于 useRef 的一个特性：
 
 **useRef 返回的 ref 对象在组件的整个生命周期中保持不变**。
 
-* 也就说：useRef 在组件重新渲染时，返回的依然是之前的 ref 对象。
-* 但是其中的current属性是可以更改的，我们可以通过current不断保留某个state的旧值
+* 换句话说 useRef 在组件重新渲染时，返回的依然是之前的 ref 对象。
+* 但是其中的 current 属性是可以更改的，我们可以通过 current 属性，不断保留某个 state 的旧值。
+* 由于我们只是操作了 current 属性，而并没有改变整个 ref 对象的引用，因此组件不会 reRender，从而呈现保留旧值的效果。
+
+使用方式：
+
+* 为 `useRef(arg)` 传入一个参数，作为 `myRef.current` 的初始值
+* 在组件更新、重新渲染后，将最新的 state 赋值给 `myRef.current` ，实现记录 state 旧值的功能。
 
 案例体验：
 
-* 为`useRef(arg)`传入一个参数，作为`myRef.current`的初始值
-* 在组件更新、重新渲染后，改变`myRef.current`为某个state的当前值。
-  * 因为每次都是在组件更新**完毕后**改变`myRef.current`，因此`myRef.current`保留的一直是下次更新前的值，也就是旧值
+* count 的改变，会导致组件 reRender，因此页面呈现的 count 一直是最新的。
+* 虽然 count 变更后，也更改了 `countRef.current` ，但只是操作了其中的 current 属性，并没有改变整个 countRef 的引用，因此组件不会 reRender，所以展示的 countRef.current 一直是旧值。
 
 ```
 import { useEffect, useRef, useState } from "react";
@@ -531,7 +536,7 @@ useImperativeHandle(ref, createHandle, [...dep])
 ```
 
 * **`ref`**：需要拦截的 ref 对象
-* **`createHandle`**：是一个callback，会自动执行，并将其返回值赋予给`ref.current`
+* **`createHandle`**：是一个用于暴露接口的 callback，会自动执行，并将其返回值赋予给`ref.current`
   * 通常返回一个Object，在其中配置各个属性、方法。这样外部就能通过`ref.current.propName`间接操作DOM元素。
 * **`[...dep]`**：侦听的依赖项，当依赖项变更时，useImperativeHandle 才会重新执行。
 
@@ -599,16 +604,15 @@ export default forwardRef(Child);
 
 ### 注意点
 
-* 在子组件中需要重新创建一个Ref：`childRef`。
-* 将`childRef`绑定在目标DOM的 ref 属性上。
-* `useImperativeHandle`拦截的是 forwardRef 转发的 ref ，通过第二个参数设置接口时，通过`childRef`操作目标DOM。
+* 在子组件中需要重新创建一个 Ref (`childRef`)绑定在目标 DOM 上，作为子组件内部真实操作的 Ref。
+* `useImperativeHandle`拦截的是 forwardRef 转发的 ref ，通过第二个参数设置接口时，通过 **真正的ref** (`childRef`) 操作目标DOM。
 
 ## useLayoutEffect
 
 `useLayoutEffect`看起来和`useEffect`非常的相似，事实上它们也只有一点区别而已：
 
 - useEffect会在渲染更新操作完毕**之后执行**，不会阻塞DOM的更新；
-- useLayoutEffect会在渲染更新操作**之前执行**，会阻塞DOM的更新；
+- useLayoutEffect会在渲染更新操作完毕**之前执行**，会阻塞DOM的更新；
 
 如果我们希望在**某些操作发生之后再更新DOM**，那么应该将这个操作放到 useLayoutEffect 中。
 
@@ -616,9 +620,9 @@ export default forwardRef(Child);
 
 以下代码，会导致页面上的数字发生闪烁；
 
-- 点击按扭，先将count变更为0，那么DOM会被更新到页面，**更新渲染完毕后**，才会执行useEffect中的回调函数；
-- 在useEffect中我们发现count为0，又立即执行一次setCount操作，那么DOM会被再次更新。
-- 更新渲染完毕后，useEffect又会被执行一次，只不过此时count不为0，不会再次触发更新；
+- 点击按扭，先将 count 变更为 0，那么 DOM 会被更新到页面，**页面更新渲染完毕后**，才会执行 useEffect 中的回调函数；
+- 在 useEffect 中发现 count 为 0，又立即执行一次 setCount 操作，那么DOM会被再次更新。
+- 更新渲染完毕后，useEffect 又会被执行一次，只不过此时 count 不为 0，不会再次触发更新；
 - 由于之前两次的页面更新 时间间隔非常短，就会产生闪烁现象。
 
 ```
@@ -650,7 +654,8 @@ export default function App() {
 
 若使用`useLayoutEffect`，则能解决闪烁现象。
 
-* 此时点击按扭，先将count变更为0，那么DOM会被更新到页面，但在**更新渲染之前**，就会执行`useLayoutEffect`中的回调函数，在其中又将count变更，然后再执行更新渲染操作。
+* 此时点击按扭，先将 count 变更为 0，此时触发页面的更新机制，但在 **页面更新渲染之前**，就会执行`useLayoutEffect`中的回调函数，再次将 count 进行变更。
+* 虽然 count 第二次变更后，依旧会触发更新机制，但此时 count 不为 0，不会再次触发更新。
 * 只执行了一次更新渲染的操作，因此不会造成数字闪烁。
 
 ```
