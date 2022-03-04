@@ -4,8 +4,8 @@
 
 - Vue3.0中可继续沿用Vue2.x中的大部分生命周期钩子，但有两个被更名：
 
-  - `beforeDestroy`改名为 `beforeUnmount`
-  - `destroyed`改名为 `unmounted`
+  - `beforeDestroy` 改名为  `beforeUnmount`
+  - `destroyed` 改名为 `unmounted`
 
   也就是说，如果配置`beforeDestroy/destroyed`将不再奏效
 
@@ -20,15 +20,15 @@
   - `beforeUnmount` ==>`onBeforeUnmount`
   - `unmounted` =====>`onUnmounted`
 
-  setup中没有对应`beforeCreate/created`的部分，因为`setup`会在二者**之前**进行调用，所以这里直接使用setup进行替换。
+  setup 中没有对应 `beforeCreate/created `的部分，因为 `setup` 会在二者 **之前** 进行调用，所以这里直接使用 setup 进行替换。
 
 ## 调用顺序
 
-​	上面介绍到：Vue3中既可以像Vue2.x一样将生命周期钩子作为option进行配置，也可以在CompositionAPI中进行配置。
+​	上面介绍到：Vue3中既可以像 Vue2.x 一样将生命周期钩子作为 option 进行配置，也可以在 CompositionAPI 中进行配置。
 
-​	那如果我既在options中配置了钩子，又在CompositionAPI中配置了钩子，二者调用顺序如何？
+​	那如果我既在 options 中配置了钩子，又在 CompositionAPI 中配置了钩子，二者调用顺序如何？
 
-**CompositionAPI钩子 优先于 options钩子**
+* 答案是：**CompositionAPI钩子 优先于 options钩子**
 
 可通过下例代码进行测试：
 
@@ -179,9 +179,9 @@ Vue3生命周期流程图：
 
 Vue3的生命周期流程相对于Vue2.x在某种程度上更加`‘机智’`了：
 
-​	我们知道，在Vue2.x的生命周期流程中，只要使用`new Vue()`创建了vue实例，不论是否调用了`$mount`进行挂载，都会优先进行vue实例的初始化，调用`beforeCreate/created`两个钩子。
+​	我们知道，在 Vue2.x 的生命周期流程中，只要使用 `new Vue()` 创建了vue实例，不论是否调用了 `$mount` 进行挂载，都会优先进行 vue 实例的初始化，调用 `beforeCreate/created` 两个钩子。
 
-​	如果一些Vue实例未被挂载，证明这些组件是无用的，因为最终不会被挂载到页面上，但在Vue2.x中，还是会进行实例的初始化和钩子的调用。
+​	如果一些 Vue 实例未被挂载，证明这些组件是无用的，因为最终不会被挂载到页面上，但在 Vue2.x 中，还是会进行实例的初始化和钩子的调用。
 
-​	而Vue3的生命周期流程要求：必须使用`createApp`创建了vue实例，并且使用`mount`将实例挂载到实际DOM上，才会进行实例初始化，之后才能执行后续的钩子函数。
+​	而 Vue3 的生命周期流程要求：必须使用 `createApp` 创建了vue实例，并且使用 `mount` 将实例挂载到实际DOM上，才会进行实例初始化，之后才能执行后续的钩子函数。
 

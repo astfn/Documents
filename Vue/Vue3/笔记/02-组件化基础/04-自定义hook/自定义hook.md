@@ -1,16 +1,16 @@
 ## 什么是hook？
 
-很多地方都有hook的概念，在Vue中hook本质上就是一个函数，该函数把setup中的一些业务进行了抽离。
+很多地方都有 hook 的概念，在 Vue 中 hook 本质上就是一个函数，该函数把 setup 中的一些业务进行了抽离。
 
-我们通常会建立一个单独的JavaScript文件存放hook，当进行hook的复用时，只需要在目标组件引入即可，这有点像Vue2.x中的mixin，但setup结合hook，会有更多的好处。
+我们通常会建立一个单独的 JavaScript 文件存放 hook，当进行 hook 的复用时，只需要在目标组件引入即可，这有点像 Vue2.x 中的 mixin，但 setup 结合 hook，会有更多的好处。
 
 ## mixins
 
-**我们先来回顾一下mixins的一些特性**
+**我们先来回顾一下 mixins 的一些特性**
 
-1. mixins中的生命周期钩子会与引入该mixins组件的生命周期操作合并在一起。
-2. 如果mixins中的各个状态(data、methods、computed…)名称与组件中的重名，组件中的状态会覆盖mixins
-3. 不同mixin里的同名状态，按照引进的顺序，最后的覆盖之前的。
+1. mixins 中的生命周期钩子，会与引入该 mixins 的组件的生命周期操作合并在一起。
+2. 如果 mixins 中的各个状态(data、methods、computed…)名称与组件中的重名，组件中的状态会覆盖 mixins
+3. 不同 mixin 里的同名状态，按照引进的顺序，最后的覆盖之前的。
 
 **mixins的缺点**：
 
@@ -30,19 +30,21 @@
 
 ## 自定义hook
 
-- 使用Vue3的CompositionAPI封装的可复用的功能函数
-- 自定义hook的作用类似于vue2中的mixin技术
-- 自定义Hook的优势:
-  -  很清楚复用功能代码的来源
-  -  结合setup让对应功能的代码块更加简洁。
+### 应用场景
 
-下面通过一个案例来体会hook使用的好处：
+- 使用 Vue3 的 CompositionAPI 封装的可复用的功能函数
+- 自定义 hook 的作用类似于 vue2 中的 mixin 技术
+- 自定义 Hook 的优势:
+  -  很清楚复用功能代码的来源
+  -  结合 setup 让对应功能的代码块更加简洁。
+
+下面通过一个案例来体会 hook 使用的好处：
 
 在某组件中使用了3个功能，且这些功能也很可能被其他组件复用，这些功能分别为：
 
 * Counter
 * MousePosition
-* showPrice
+* localStorage
 
 ```
 <template>
@@ -52,6 +54,7 @@
       <strong>{{ counter }}</strong>
       <button @click="increment">+</button>
     </div>
+
     <div class="mouseBox">
       <p>
         鼠标x坐标:<strong>{{ x }}</strong>
@@ -60,7 +63,12 @@
         鼠标y坐标:<strong>{{ y }}</strong>
       </p>
     </div>
-    <p class="price">{{ showPrice(999) }}</p>
+
+    <div class="localData">
+      <button @click="handelChangeUser">handelChangeUser</button>
+      <button @click="clearUser">clearUser</button>
+      <p>{{ userState }}</p>
+    </div>
   </main>
 </template>
 <script>
@@ -72,6 +80,7 @@
     reactive,
     ref,
     toRefs,
+    watch,
   } from "vue";
 
   export default defineComponent({
@@ -87,6 +96,7 @@
       const isDisabled = computed(() => {
         return counter.value <= 1;
       });
+      
       //Mouse
       const MouseState = reactive({
         x: 0,
@@ -106,16 +116,42 @@
       const showPrice = (price, prefix = "￥") => {
         return `${prefix}${price}`;
       };
+
+      //localStorage
+      let userFromLocal = JSON.parse(localStorage.getItem("user"));
+      let userState = ref(userFromLocal);
+
+      let handelChangeUser = () => {
+        let random = (Math.random() * 100).toFixed(2);
+        let newUser = { name: "Ashun" + random, age: 18 };
+
+        userState.value = newUser;
+        localStorage.setItem("user", JSON.stringify(newUser));
+      };
+
+      let clearUser = () => {
+        localStorage.removeItem("user");
+        userState.value = null;
+      };
+
+      watch(userState, (newUser, oldUser) => {
+        console.log(newUser, oldUser);
+      });
+
       return {
         //Counter
         counter,
         increment,
         decrement,
         isDisabled,
+        
         //Mouse
         ...toRefs(MouseState),
-        //showPrice
-        showPrice,
+        
+        //useLocalStorage
+        userState,
+        handelChangeUser,
+        clearUser,
       };
     },
   });
@@ -124,9 +160,9 @@
 
 通过上述代码，我们可以体会到：
 
-* setup对比传统optionsAPI，各个功能代码不会掺杂在一起，形成独立的代码块，逻辑比较清晰
-* 但是当业务逐渐庞大时，可以发现setup中的代码逐渐变得臃肿
-* 我们就可把各个功能抽离为对应的hook，不仅代码结构更清晰，还更利于功能的复用
+* setup 对比传统 optionsAPI，各个功能代码不会掺杂在一起，形成独立的代码块，逻辑比较清晰
+* 但是当业务逐渐庞大时，可以发现 setup 中的代码逐渐变得臃肿
+* 我们就可把各个功能抽离为对应的 hook，不仅代码结构更清晰，还更利于功能的复用👇
 
 ### 抽离hook
 
@@ -137,8 +173,8 @@
 ```
 ├─hooks
 │  ├─useCounter.js
-│  ├─useMousePosition.js     
-│  ├─useShowPrice.js
+│  ├─useLocalStorage.js     
+│  ├─useMousePosition.js
 │
 ├─App.vue
 ```
@@ -168,12 +204,37 @@ export default function() {
 }
 ```
 
-**useMousePosition.js**  
+**useLocalStorage.js**  
+
+```
+import { ref, watch } from "vue";
+
+export default function useLocalStorage(name, callback) {
+  let item = JSON.parse(localStorage.getItem(name));
+  let state = ref(item);
+
+  let setState = (item) => {
+    state.value = item;
+    localStorage.setItem(name, JSON.stringify(item));
+  };
+
+  let clearState = () => {
+    localStorage.removeItem(name);
+    state.value = null;
+  };
+
+  watch(state, callback);
+
+  return [state, setState, clearState];
+}
+```
+
+**useMousePosition.js**
 
 ```
 import { onMounted, onUnmounted, reactive, toRefs } from "vue";
 
-export default function() {
+export default function () {
   const MouseState = reactive({
     x: 0,
     y: 0,
@@ -181,7 +242,6 @@ export default function() {
   const clickFunc = (e) => {
     MouseState.x = e.clientX;
     MouseState.y = e.clientY;
-    console.log("Ashun");
   };
   onMounted(() => {
     window.addEventListener("click", clickFunc);
@@ -196,53 +256,38 @@ export default function() {
 }
 ```
 
-**useShowPrice.js**
-
-```
-export default function() {
-  const showPrice = (price, prefix = "￥") => {
-    return `${prefix}${price}`;
-  };
-  return {
-    showPrice,
-  };
-}
-```
-
 **App.js**
 
 ```
-<template>
-  <main>
-    <div class="counterBox">
-      <button @click="decrement" :disabled="isDisabled">-</button>
-      <strong>{{ counter }}</strong>
-      <button @click="increment">+</button>
-    </div>
-    <div class="mouseBox">
-      <p>
-        鼠标x坐标:<strong>{{ x }}</strong>
-      </p>
-      <p>
-        鼠标y坐标:<strong>{{ y }}</strong>
-      </p>
-    </div>
-    <p class="price">{{ showPrice(999) }}</p>
-  </main>
-</template>
+<template> …… </template>
 <script>
   import { defineComponent, toRefs } from "vue";
   import useCounter from "./hooks/useCounter.js";
   import useMousePosition from "./hooks/useMousePosition.js";
-  import useShowPrice from "./hooks/useShowPrice.js";
+  import useLocalStorage from "./hooks/useLocalStorage.js";
+
   export default defineComponent({
     setup() {
       //Counter
       let { counter, increment, decrement, isDisabled } = useCounter();
       //Mouse
       let { x, y } = useMousePosition();
-      //showPrice
-      let { showPrice } = useShowPrice();
+
+      //useLocalStorage
+      let changeUserCallback = (newInfo, oldInfo) => {
+        console.log(newInfo, oldInfo);
+      };
+
+      let [user, setUser, clearUser] = useLocalStorage(
+        "user",
+        changeUserCallback
+      );
+
+      let handelChangeUser = () => {
+        let random = (Math.random() * 100).toFixed(2);
+        setUser({ name: "Ashun" + random, age: 18 });
+      };
+
       return {
         //Counter
         counter,
@@ -252,15 +297,18 @@ export default function() {
         //Mouse
         x,
         y,
-        //showPrice
-        showPrice,
+        //useLocalStorage
+        user,
+        handelChangeUser,
+        clearUser,
       };
     },
   });
 </script>
 ```
 
-可以看到，hook引入各个功能模块：
+可以看到，hook 引入各个功能模块：
 
-* 能够非常清晰的知道各个state、method的来源。
-* 结合setup，代码逻辑非常清晰
+* 能够非常清晰的知道各个 state、method 的来源。
+* 结合 setup，代码逻辑非常清晰
+
