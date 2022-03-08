@@ -19,7 +19,9 @@
   - `updated` =======>`onUpdated`
   - `beforeUnmount` ==>`onBeforeUnmount`
   - `unmounted` =====>`onUnmounted`
-
+  - `activated` =====> `onActivated`
+  - `deactivated` ===> `onDeactivated`
+  
   setup 中没有对应 `beforeCreate/created `的部分，因为 `setup` 会在二者 **之前** 进行调用，所以这里直接使用 setup 进行替换。
 
 ## 调用顺序
