@@ -246,6 +246,10 @@ todo案例，加深体验
 </script>
 ```
 
+关于数组的响应式：
+
+* vue2.x 内部使用 Object.defineProperty 实现数据劫持，但 defineProperty 自身是能够拦截 Array 的每一个 item 的。但在 vue2.x 中，我们不能直接通过索引改变 Array，这将不能实现响应式。你可能会觉的这很矛盾，但尤大在 vue 的 issue 上进行了解答，之所以不使用 defineProperty 拦截数组，是因为 **性能问题**。在源码中，也确实对 Array 类型的数据进行了特殊处理，此时将不会监控其中的每一项 item。
+
 >值得注意的是：上述两则案例，reactive 中传入的都是一个 Object，当然也可传入其它 **引用类型数据**，但reactive **不能代理基本数据类型**，因为 reactive 内部应用的是 `Proxy` 实现数据劫持。
 >
 >若想产生 `基本数据类型` 的响应式引用，可以使用 `ref` 👇
