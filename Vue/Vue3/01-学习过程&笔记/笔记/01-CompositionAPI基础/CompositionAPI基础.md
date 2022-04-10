@@ -109,12 +109,17 @@ vue3
 CompositionAPI 的应用，都是在 `setup(props,context)` 方法中完成的，setup 相当于 CompositionAPI 的入口，下面先总结一下setup的特点：
 
 * 组件中用到的 state、method，都是在 setup 中配置的。
-* setup 有两种返回值，作用也不同
-  * ⭐ 返回一个object，其中的属性、方法，能够与模板进行绑定。
-  * 直接返回一个渲染函数，自定义渲染的内容
-  * 所以 setup 不能是一个 `async` 函数，因为此时返回的将是 Promise，模板中将不能绑定其中的 state
-*  setup 选项在组件创建 **之前** 执行
+*  执行时机：setup 选项在组件创建 **之前** 执行
   * 具体来说：在 `beforeCreate`、`created` 之前执行，也就是说 setup 内部 **不能** 使用`this`去访问实例。
+* 函数类型：
+  * 同步函数（常用）
+  * 异步函数（async）
+* 返回值：
+  * 默认情况下(同步函数) setup 有两种返回值，作用也不同
+    * ⭐ 返回一个object，其中的属性、方法，能够与模板进行绑定。
+    * 直接返回一个渲染函数，自定义渲染的内容
+  * 若将 setup 设置为 async（异步函数），将默认返回 Promise。
+    * 此时为了让 template 能够正常绑定 state，需要在父组件作用域中使用 suspense 处理异步组件
 
 ## state与method
 
