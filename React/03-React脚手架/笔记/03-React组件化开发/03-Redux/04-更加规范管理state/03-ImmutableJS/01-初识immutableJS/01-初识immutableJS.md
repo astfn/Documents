@@ -7,8 +7,9 @@
 
 数据可变性引发的问题（引用类型）：
 
-- 我们明明没有修改obj，只是修改了obj2，但结果obj也被一并修改了
+- 我们明明没有修改obj，只是修改了obj2，但结果obj也被一并修改了。
 - 原因非常简单，引用类型数据，它们共同指向同一块内存空间，两个引用都可以任意修改该内存空间中的数据
+- 这种性质就会导致：后期的数据维护变得不可预测
 
 ```
 const obj = {
@@ -232,5 +233,95 @@ let rawObj = immObj.toJS();
 let rawArr = immArr.toJS();
 console.log(rawObj, rawArr);
 // {name: "Ashun", age: 18}  [1, 2, 3]
+```
+
+## immutable过程
+
+文章开头讲到：
+
+- 在 JS 中，引用数据类型共享同一内存空间，这通常造成不可预测的更改操作。immutableJS 能够帮助我们解决这个问题。
+- 当数据被修改时，会返回一个新对象，但是**新对象会尽可能利用之前的旧数据**，从而解决浪费内存的问题。
+
+* 在尽力复用旧数据的同时，又返回了新的引用，让后期的数据变更变得可预测。
+
+但这里要着重讲解一下 immutableJS 产生新引用的过程：
+
+因为刚开始接触 immutableJS 时，你可能会产生以下**错误的理解**：
+
+* immutableJS 只是单纯的改变 `被更新的数据部分` ，其它所有的数据都进行复用。
+
+我们再来看下这张图：
+
+<img src="01-初识immutableJS.assets/001.gif" alt="001" style="zoom:55%;" />
+
+* 只是 `黄色` 节点的数据产生了更新
+* 但是它的父节点、祖先节点，都依次产生了新的引用。
+* 因此，immutableJS 的具体行为是：沿着 `更新数据的节点` 路径，依次回溯到根节点，并产生新的引用（绿色部分）
+
+你可能会觉得这些 `回溯更新` 操作是多余的，因为我们只希望 `黄色` 节点产生更新。
+
+但是，`回溯更新` 操作是非常重要的，这也正是 **让数据变更变得可预测** 的必要操作。
+
+举个例子🌰
+
+```
+let obj = {
+  a: {
+    aa: {
+      name: "Ashun",
+      friends: ["yuankai", "tianyi", "shaojia"],
+    },
+  },
+  b: {
+    name: "Ashun",
+  },
+};
+```
+
+如果我们只是想变更 `obj.a.aa.name` ,又想返回一个新的引用，但保证其它所有的数据都是原来的引用
+
+* 浅拷贝 obj，生成 obj1
+* 通过 obj1 去改变 name
+
+```
+let obj1 = { ...obj };
+obj1.a.aa.name = "Ashuntefannao";
+console.log(obj == obj1); //false
+console.log(obj1.a.aa.name === obj.a.aa.name);	//true
+```
+
+但严重的问题也随之暴露，通过新的引用 `obj1` 更改 name ,依然会影响 `obj` 中的 name。
+
+因为 name 包含在 aa 中，而 aa 又是引用数据类型，因此造成这种不可预测的窘况。
+
+此时你可能会想：直接进行深 copy 不就行了？
+
+但每次操作数据，都要进行一次深度 copy，很显然会损失大量性能和内存。
+
+而 immutableJS 就很好的解决了这个问题，在保证数据变更可预测的同时，又尽力复用旧引用。**这离不开** `回溯更新` **操作**。
+
+如果使用 immutableJS 进行同样的操作，内部将执行以下步骤：
+
+* 变更 name，更新 aa 的引用，再更新 a 的引用，再更新 obj1，返回一个新的引用
+* 并且，只是对数据的最外层更新引用（更新 aa 不会影响 friends）
+
+<img src="01-初识immutableJS.assets/007.png" alt="007" style="zoom:80%;" />
+
+```
+let obj1 = Immutable.Map(obj);
+let obj2 = obj1.setIn(["a", "aa", "name"], "ASHUN");
+```
+
+```
+console.log(obj2.getIn(["a", "aa", "name"]));	//"ASHUN"
+
+//根据变更数据的路径，回溯依次更新引用
+console.log(obj2.getIn(["a", "aa"]) == obj1.getIn(["a", "aa"])); //false
+console.log(obj2.getIn(["a"]) == obj1.getIn(["a"]));	//false
+console.log(obj == obj1);	//false
+
+//尽力复用旧数据
+console.log(obj2.getIn(["b"]) == obj1.getIn(["b"]));	//true
+console.log(obj2.getIn(["a", "aa", "friends"]) == obj1.getIn(["a", "aa", "friends"]));	//true
 ```
 
