@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- CDN 引入 Echarts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
+  </head>
+
+  <body>
+    <!-- 提供图表容器,并设置其宽高 -->
+    <div id="chartBox"></div>
+
+    <script>
+      const chartBox = document.getElementById("chartBox");
+
+      //传入容器,初始化图标,并在此时设置容器尺寸（也可在css中设置）
+      const myChart = echarts.init(chartBox, null, {
+        // width: 500,
+        height: "300px",
+      });
+
+      //配置 option
+      var option = {
+        title: {
+          text: "ECharts 入门示例",
+        },
+        tooltip: {},
+        legend: {
+          data: ["销量"],
+        },
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20],
+          },
+        ],
+      };
+
+      //将 option 设置到图表本身
+      myChart.setOption(option);
+    </script>
+  </body>
+</html>
