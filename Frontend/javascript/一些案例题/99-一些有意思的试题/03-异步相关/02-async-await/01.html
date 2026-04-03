@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      async function foo() {
+        console.log(2);
+        console.log(await Promise.resolve(8));
+        console.log(9);
+      }
+      async function bar() {
+        console.log(4);
+        console.log(await 6);
+        console.log(7);
+      }
+
+      console.log(1);
+      foo();
+      console.log(3);
+      bar();
+      console.log(5);
+
+      /*
+        1. 关于 await Promise.resolve(8)
+            * 虽然是一个立即确认状态的Promise，但Promise的处理依旧属于异步微任务，具有异步效果
+            * 所以执行该语句后，会跳到外部，优先执行同步代码
+        2. 关于 await 6 
+            * 虽然 6 不是一个Promise，但此时会将它视为一个立即确认状态的Promise，并且返回值为 6 ，相当于 Promise.resolve(6)
+            * 因此，和上文的 await Promise.resolve(8) 一样，进行异步处理，执行该语句后，先将其添加到微任务队列中，然后也会先跳到外部，执行同步代码
+      */
+    </script>
+  </body>
+</html>

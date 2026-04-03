@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      {
+        /* a==1 && a==2*/
+        //通过隐式类型转换，内部自动执行的 valueOf 方法实现。
+
+        let a = {
+          value: 1,
+          valueOf() {
+            let res = this.value++;
+            console.log(res);
+            return res;
+          },
+        };
+
+        // console.log(a == 1 && a == 2); //true
+
+        //使用 === 进行比较，不会触发 valueOf 方法，因此返回 false。
+        console.log(a === 1 && a === 2); // false
+      }
+
+      {
+        /* a===1 && a===2 */
+        //使用数据劫持，每次访问 a 时，让其自增
+
+        /*
+          注意点：
+          1. defineProperty结合闭包，实现代理，否则在 getter 里面访问 window.a 又会触发 getter 造成死循环。
+          
+        */
+
+        function effect(obj, prop, value) {
+          Object.defineProperty(obj, prop, {
+            get() {
+              return value++;
+            },
+          });
+        }
+        effect(window, "a", 1);
+
+        console.log(a === 1 && a === 2);
+      }
+    </script>
+  </body>
+</html>

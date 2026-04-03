@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //testFunc为普通函数
+      let testFunc = function () {
+        console.log(this);
+      };
+
+      //testFunc为箭头函数
+      // let testFunc = () => {
+      //   console.log(this);
+      // };
+
+      let objA = {
+        testFunc: testFunc,
+      };
+
+      let objB = {};
+      let testFuncBind = testFunc.bind(objA);
+      let ttFunc = objA.testFunc;
+
+      testFunc();
+      objA.testFunc();
+      testFuncBind();
+      testFunc.apply(objA);
+      testFuncBind.apply(objB);
+      ttFunc();
+
+      /*
+          关于箭头函数，我们知道：
+            * 没有构造函数
+            * 没有自身的 this
+            * 若在其中使用 this，将指向箭头函数被定义时的父级作用域
+          
+          这道题目有意思的点在于：
+            之前一直没考虑过箭头函数是否能够使用 call/apply/bind 去绑定this。
+            答案是：不能。
+            箭头函数中的 this 依旧遵循：指向箭头函数被定义时的父级作用域
+            因为箭头函数没有自身的this，因此也就不能使用 call/apply/bind 更改this。
+      */
+
+      /*
+          关于普通函数：
+            新知识：
+              testFuncBind.apply(objB) 打印的 this 依旧指向 objA。
+            **一旦函数已经被 bind 绑定过this，后续的更改，将不起作用**
+            * bind的作用是生成一个新函数，且永久的改变该函数的this指向。
+
+          其实手动实现 bind 的过程中，就可以理解：
+          
+           Function.prototype.BIND = function (context, ...args) {
+            context = context || window;
+
+            let self = this;
+
+            return function Fn() {
+              //处理实例化的场景
+              // if (this instanceof Fn) {
+              //   return new self(...args, ...arguments);
+              // }
+              return self.apply(context, [...args, ...arguments]);
+            };
+          };
+
+
+          最后返回一个新的函数，并且已经决定好this，并调用了：
+            return function Fn() {
+              //处理实例化的场景
+              // if (this instanceof Fn) {
+              //   return new self(...args, ...arguments);
+              // }
+              return self.apply(context, [...args, ...arguments]);
+            };
+      */
+    </script>
+  </body>
+</html>

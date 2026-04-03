@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+         bind 特点：
+         * 不会主动调用
+         * 本质是 copy 函数的行为
+      */
+
+      Function.prototype.BIND = function (context, ...args) {
+        context = context || window;
+
+        let self = this;
+
+        return function Fn() {
+          // if (this instanceof Fn) {
+          //   return new self(...args, ...arguments);
+          // }
+          return self.apply(context, [...args, ...arguments]);
+        };
+      };
+
+      let html = document.documentElement;
+      let handelClick = function (e) {
+        console.log(this);
+        console.log(`childNodes:${e.target.childNodes.length}`);
+      };
+      // html.onclick = handelClick.bind({ context: "手动指定this" });
+      html.onclick = handelClick.BIND({ context: "手动指定this" });
+
+      function User() {
+        this.name = "Ashun";
+        this.age = 18;
+      }
+
+      let u1 = new User();
+      console.log(u1);
+
+      let copyUser = User.bind();
+      console.log(new copyUser());
+
+      let copyUser1 = User.BIND();
+      console.log(new copyUser());
+    </script>
+  </body>
+</html>

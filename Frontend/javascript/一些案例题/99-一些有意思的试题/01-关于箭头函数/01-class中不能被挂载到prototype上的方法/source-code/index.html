@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Product {
+        name = "";
+        price = 0;
+
+        constructor(name, price) {
+          this.name = name;
+          this.price = price;
+        }
+
+        getName() {
+          console.log("the product is" + this.name);
+          return this.name;
+        }
+
+        // 这种声明形式，将不能被挂载到prototype上
+        getPrice = function () {
+          console.log("it is " + this.price);
+          console.log(this);
+          return this.price;
+        };
+      }
+      console.log(Product.prototype);
+
+      let obj = new Product("Ashun", 18);
+      //
+      let obj1 = new Product("Ashun1");
+      // console.log(obj.getName());
+      console.log(obj.getPrice());
+      console.log(obj1.getPrice());
+      // console.dir(Product instanceof Function);
+
+      // let obj = {
+      //   name: "Ashun",
+      //   show: () => {
+      //     console.log(this.name);
+      //   },
+      //   // show=()=> {
+      //   //   console.log(this.name);
+      //   // },
+      // };
+      // obj.show();
+
+      {
+        // 使用原生Function实现
+        // function Product(name, price) {
+        //   this.name = name || "";
+        //   this.price = price || 0;
+        // }
+        // Product.prototype.getName = function () {
+        //   console.log("the product is" + this.name);
+        //   return this.name;
+        // };
+        // Product.prototype.getPrice = function () {
+        //   console.log("it is" + this.price);
+        //   return this.name;
+        // };
+      }
+
+      {
+        /* Function */
+        // function TEST() {
+        //   this.show = () => {
+        //     console.log(this.name);
+        //   };
+        //   this.name = "Ashun";
+        // }
+        // console.dir(TEST);
+        // const as = new TEST();
+        // as.show();
+        // console.log(as);
+      }
+
+      {
+        class Admin {
+          type = "controller";
+          weight = Infinity;
+
+          constructor({ name, age }) {
+            this.name = name;
+            this.age = age;
+          }
+
+          show() {
+            console.log(`名称:${this.name};年龄${this.age}`);
+          }
+        }
+        let admin = new Admin({ name: "Ashun", age: 18 });
+        setTimeout(() => {
+          console.log(admin);
+        }, 200);
+      }
+    </script>
+  </body>
+</html>

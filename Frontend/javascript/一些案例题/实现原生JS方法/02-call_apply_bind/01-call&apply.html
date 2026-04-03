@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let nums = [1, 2, 3, 4, 5];
+
+      {
+        /*
+          
+            CALL封装的主要思路：
+            *  先保留函数实例的 this
+            *  后期调用这个 this （函数）
+            *  调用后，保留结果，并 return
+            *  避免产生过多垃圾，将保留 this 的空间销毁掉
+          
+            注意点：
+            * context 默认指向 window
+            * 参数转递形式
+        
+        */
+        Function.prototype.CALL = function (context, ...args) {
+          context = context || window;
+
+          let fn = Symbol("callFun");
+          context[fn] = this;
+
+          console.log(Object.getOwnPropertySymbols(context));
+
+          let res = context[fn](...args);
+
+          delete context[fn];
+          return res;
+        };
+
+        let metas = document.querySelectorAll("meta");
+
+        Array.prototype.map.call(metas, (val) => console.log("call", val));
+        Array.prototype.map.CALL(metas, (val) => console.log("CALL", val));
+
+        console.log(Math.min.call(null, ...nums));
+        console.log(Math.max.CALL(null, ...nums));
+      }
+
+      {
+        /*
+          与 call 的封装过程，只在参数传递形式上有差异。
+        */
+        Function.prototype.APPLY = function (context, argsArr) {
+          context = context || window;
+
+          let fn = Symbol("applyFun");
+          context[fn] = this;
+
+          console.log(Object.getOwnPropertySymbols(context));
+
+          let res = context[fn](...argsArr);
+
+          delete context[fn];
+          return res;
+        };
+
+        let metas = document.querySelectorAll("meta");
+
+        Array.prototype.map.apply(metas, [(val) => console.log("apply", val)]);
+        Array.prototype.map.APPLY(metas, [(val) => console.log("APPLY", val)]);
+
+        console.log(Math.min.apply(null, nums));
+        console.log(Math.max.APPLY(null, nums));
+      }
+    </script>
+  </body>
+</html>

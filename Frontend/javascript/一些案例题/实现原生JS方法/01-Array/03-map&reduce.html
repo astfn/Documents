@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      {
+        /* map: 注意第二个参数，thisArg: 执行callback 时，所绑定的this */
+        Array.prototype.MAP = function (callback, thisArg) {
+          let res = [];
+          for (let i = 0; i < this.length; i++) {
+            res[i] = callback.call(thisArg, this[i], i, this);
+          }
+          return res;
+        };
+
+        let arr = [1, 2, 3, 4, 5];
+        console.log(
+          arr.map((val, index, arr) => {
+            return ++val;
+          })
+        );
+
+        console.log(
+          arr.MAP((val, index, arr) => {
+            return ++val;
+          })
+        );
+        console.log(arr);
+      }
+
+      {
+        /* reduce */
+        /*
+            prev 有初始值，则 val 从第二个元素开始遍历。
+            反之 val 从第一个元素开始遍历。
+        */
+        Array.prototype.Reduce = function (callback, initialValue) {
+          // let preValue = initialValue !== undefined ? initialValue : this[0];
+          // let i = 0;
+          // let isInitial = preValue === initialValue;
+          // i = isInitial ? 0 : 1;
+          // while (i < this.length) {
+          //   preValue = callback(preValue, this[i], i, this);
+          //   i++;
+          // }
+          // return preValue;
+
+          let preValue = initialValue;
+          let startIndex = 0;
+
+          if (initialValue === undefined) {
+            preValue = this[0];
+            startIndex = 1;
+          }
+
+          for (let i = startIndex; i < this.length; i++) {
+            preValue = callback(preValue, this[i], i, this);
+          }
+
+          return preValue;
+        };
+
+        let arr = [1, 2, 3, 4, 5];
+
+        console.log(
+          arr.reduce((pre, val, index, arr) => {
+            console.log(index);
+            return (pre += val);
+          }, 0)
+        );
+
+        console.log(
+          arr.Reduce((pre, val, index, arr) => {
+            console.log(index);
+
+            return (pre += val);
+          })
+        );
+        console.log(arr);
+      }
+    </script>
+  </body>
+</html>
