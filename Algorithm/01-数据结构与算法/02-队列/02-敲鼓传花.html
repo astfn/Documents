@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import Queue from "./01-队列的封装.js";
+
+      function passGame(nameList, num) {
+        //数据存储
+        let queue = new Queue();
+        nameList.forEach((v) => queue.enqueue(v));
+        /*  过程  */
+        //剩下赢家之前，不断执行
+        while (queue.size() > 1) {
+          //如果未达到预设数字，则不断的出入队列
+          for (let i = 0; i < num - 1; i++) {
+            let current = queue.dequeue();
+            queue.enqueue(current);
+          }
+          //达到预设数字，出队
+          queue.dequeue();
+        }
+        //返回赢家在原有数据的索引
+        return nameList.findIndex((v) => v == queue.front());
+      }
+
+      // let names = ["Ashun", "SHUN", "ASHUN"];
+      let names = ["Lily", "Lucy", "Tom", "Lilei", "Ashun"];
+      function passGame1(nameList, number) {
+        let list = [...nameList];
+        while (list.length > 1) {
+          if (number > list.length - 1) {
+            number -= list.length - 1;
+          }
+          list.splice(number - 1, 1);
+        }
+        return nameList.findIndex((v) => v == list[0]);
+      }
+      console.log(passGame(names, 3));
+      console.log(passGame1(names, 3));
+    </script>
+  </body>
+</html>

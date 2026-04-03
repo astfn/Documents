@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>双向链表的封装</title>
+  </head>
+  <body>
+    <script>
+      //双向链表类
+      function DoublyLinkedList() {
+        this.head = null;
+        this.foot = null;
+        this.length = 0;
+      }
+      //各个节点元素类
+      function Node(data) {
+        this.prev = null;
+        this.data = data;
+        this.next = null;
+      }
+      //常用方法的封装👇
+      /*
+        增
+      */
+      DoublyLinkedList.prototype.append = function (ele) {
+        let newNode = new Node(ele);
+        if (this.length === 0) {
+          this.head = this.foot = newNode;
+        } else {
+          this.foot.next = newNode;
+          newNode.prev = this.foot;
+          this.foot = newNode;
+        }
+        return ++this.length;
+      };
+      DoublyLinkedList.prototype.insert = function (position, ele) {
+        if (position < 0 || position > this.length) {
+          return false;
+        }
+
+        let newNode = new Node(ele);
+        if (this.length === 0 || position == this.length) {
+          return this.append(ele);
+        } else {
+          let current = this.head;
+          let index = 0;
+
+          if (position === 0) {
+            this.head.prev = newNode;
+            newNode.next = this.head;
+            this.head = newNode;
+          } else {
+            while (index++ < position) {
+              current = current.next;
+            }
+            let prevNode = current.prev;
+            prevNode.next = newNode;
+            newNode.prev = prevNode;
+            current.prev = newNode;
+            newNode.next = current;
+          }
+        }
+        return ++this.length;
+      };
+
+      /*
+        删
+      */
+      DoublyLinkedList.prototype.removeAt = function (position) {
+        //边界处理
+        if (position < 0 || position >= this.length) {
+          return false;
+        }
+        //根据位置，查找对应的 prevNode、current、nextNode 信息
+        let current = this.head;
+        let index = 0;
+        while (index < position) {
+          current = current.next;
+          index++;
+        }
+        let prevNode = current.prev;
+        let nextNode = current.next;
+        //删除起始位置数据
+        if (index === 0) {
+          //长度是否为1
+          if (this.length === 1) {
+            this.head = this.foot = null;
+          } else {
+            nextNode.prev = null;
+            current.next = null;
+            this.head = nextNode;
+          }
+          //删除末尾数据
+        } else if (index === this.length - 1) {
+          prevNode.next = null;
+          current.prev = null;
+          this.foot = prevNode;
+        } else {
+          //删除中间位置数据
+          prevNode.next = nextNode;
+          nextNode.prev = prevNode;
+          current.prev = current.next = null;
+        }
+        this.length--;
+        return current.data;
+      };
+
+      //借助其他方法实现
+      DoublyLinkedList.prototype.remove = function (ele) {
+        let index = this.indexOf(ele);
+        return index === -1 ? false : this.removeAt(index);
+      };
+      // //独立实现
+      // DoublyLinkedList.prototype.remove = function (ele) {
+      //   let current = this.head;
+      //   let index = 0;
+      //   while (current && current.data !== ele) {
+      //     current = current.next;
+      //     index++;
+      //   }
+      //   /*
+      //     !current 有两种含义：
+      //     1. 链表为空，压根没走while
+      //     2. 走完了while，直到最后还是没找到对应的节点
+      //   */
+      //   if (!current) {
+      //     return false;
+      //   } else {
+      //     let prevNode = current.prev;
+      //     let nextNode = current.next;
+      //     //删除开头
+      //     if (index === 0) {
+      //       //链长为1
+      //       if (this.length === 1) {
+      //         this.head = this.foot = null;
+      //       } else {
+      //         //链长不为1
+      //         nextNode.prev = null;
+      //         current.next = null;
+      //         this.head = nextNode;
+      //       }
+      //     } else if (index === this.length - 1) {
+      //       //删除结尾
+      //       prevNode.next = null;
+      //       current.prev = null;
+      //       this.foot = prevNode;
+      //     } else {
+      //       //删除中间数据
+      //       prevNode.next = nextNode;
+      //       nextNode.prev = prevNode;
+      //       current.prev = current.next = null;
+      //     }
+      //     this.length--;
+      //     return current.data;
+      //   }
+      // };
+
+      /*
+        改
+      */
+      DoublyLinkedList.prototype.update = function (position, newEle) {
+        if (position < 0 || position >= this.length) {
+          return false;
+        }
+        let isGreater = position > this.length / 2;
+        //自后向前找
+        if (isGreater) {
+          let current = this.foot;
+          let index = this.length - 1;
+          while (index-- < position) {
+            current = current.prev;
+          }
+          current.data = newEle;
+        } else {
+          //自前向后找
+          let current = this.head;
+          let index = 0;
+          while (index++ < position) {
+            current = current.next;
+          }
+          current.data = newEle;
+        }
+        return true;
+      };
+      /*
+        查
+      */
+      DoublyLinkedList.prototype.get = function (position) {
+        if (position < 0 || position >= this.length) {
+          return null;
+        }
+        let isGreater = position > this.length / 2;
+        //自后向前找
+        if (isGreater) {
+          let current = this.foot;
+          let index = this.length - 1;
+          while (index-- < position) {
+            current = current.prev;
+          }
+          return current.data;
+        } else {
+          //自前向后找
+          let current = this.head;
+          let index = 0;
+          while (index++ < position) {
+            current = current.next;
+          }
+          return current.data;
+        }
+      };
+
+      DoublyLinkedList.prototype.indexOf = function (ele) {
+        let current = this.head;
+        let index = 0;
+        while (current && current.data !== ele) {
+          current = current.next;
+          index++;
+        }
+        /*
+          !current 有两种含义：
+          1. 链表为空，压根没走while
+          2. 走完了while，直到最后还是没找到对应的节点
+        */
+        if (!current) {
+          return -1;
+        } else {
+          return index;
+        }
+      };
+      /*
+        其它
+      */
+      DoublyLinkedList.prototype.getHead = function () {
+        return this.head.data;
+      };
+      DoublyLinkedList.prototype.getFoot = function () {
+        return this.foot.data;
+      };
+
+      DoublyLinkedList.prototype.size = function () {
+        return this.length;
+      };
+      DoublyLinkedList.prototype.isEmpty = function () {
+        return this.length === 0;
+      };
+
+      DoublyLinkedList.prototype.toString = function () {
+        return this.forwardString();
+      };
+
+      DoublyLinkedList.prototype.forwardString = function () {
+        let result = "";
+        let current = this.head;
+        while (current) {
+          let next = current.next;
+          result += next ? `${current.data} ` : `${current.data}`;
+          current = next;
+        }
+        return result;
+      };
+
+      DoublyLinkedList.prototype.backwordString = function () {
+        let result = "";
+        let current = this.foot;
+        while (current) {
+          let prev = current.prev;
+          result += prev ? `${current.data} ` : `${current.data}`;
+          current = prev;
+        }
+        return result;
+      };
+
+      /*  test  */
+      {
+        let dll = new DoublyLinkedList();
+        console.log(dll.append("ashun"));
+        console.log(dll.append(123));
+        console.log(dll.insert(2, "ashuntefannao"));
+        console.log(dll.getHead());
+        console.log(dll.getFoot());
+        console.log(dll);
+
+        console.log(dll.toString());
+        console.log(dll.get(0));
+        console.log(dll.indexOf("ashuntefannao"));
+        console.log(dll.update(2, "ASHUNTEFANNAO"));
+        console.log(dll.toString());
+        console.log(dll.indexOf("ashuntefannao"));
+        console.log(dll.remove("ashun"));
+        console.log(dll.removeAt(1));
+        console.log(dll.toString());
+
+        console.log(dll.remove(123));
+        console.log(dll.isEmpty());
+
+        // console.log(dll.forwardString());
+        // console.log(dll.backwordString());
+      }
+    </script>
+  </body>
+</html>

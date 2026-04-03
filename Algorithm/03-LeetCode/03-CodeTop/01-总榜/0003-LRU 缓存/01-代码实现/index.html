@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import LRUCache from "./index.js";
+
+      let lru = new LRUCache(1);
+      lru.put(2, 1);
+      console.log(lru.get(2));
+      lru.put(3, 2);
+      console.log(lru.get(2));
+      console.log(lru.get(3));
+    </script>
+  </body>
+</html>

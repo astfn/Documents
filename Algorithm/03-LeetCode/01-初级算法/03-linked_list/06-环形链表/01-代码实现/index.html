@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import LinkedList from "./LinkedList.js";
+      import hasCycle from "./index.js";
+
+      /* 测试用例 */
+      let list1 = new LinkedList();
+      let i = 0;
+      let head;
+      let foot;
+      while (i++ < 5) {
+        let c = list1.append(i);
+        if (i === 1) {
+          head = c;
+        }
+        if (i === 5) {
+          foot = c;
+        }
+      }
+      foot.next = head;
+      console.log(list1);
+      console.log(hasCycle(list1.head));
+    </script>
+  </body>
+</html>

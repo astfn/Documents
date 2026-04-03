@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import exist from "./index.js";
+
+      const board = [
+        ["A", "B", "C", "E"],
+        ["S", "F", "C", "S"],
+        ["A", "D", "E", "E"],
+      ];
+      const word = "ABCB"; //防止遍历第二次已遍历元素
+
+      // const board = [
+      //   ["A", "B", "C", "E"],
+      //   ["S", "F", "C", "S"],
+      //   ["A", "D", "E", "E"],
+      // ];
+      // const word = "ABCCED";
+
+      // const board = [
+      //   ["A", "B", "C", "E"],
+      //   ["S", "F", "E", "S"],
+      //   ["A", "D", "E", "E"],
+      // ];
+      // const word = "ABCESEEEFS";
+
+      // const board = [
+      //   ["A", "B", "C", "E"],
+      //   ["S", "F", "E", "S"],
+      //   ["A", "D", "E", "E"],
+      // ];
+
+      // const word = "ABCEFSADEESE";
+
+      // const board = [
+      //   ["b", "a", "a", "b", "a", "b"],
+      //   ["a", "b", "a", "a", "a", "a"],
+      //   ["a", "b", "a", "a", "a", "b"],
+      //   ["a", "b", "a", "b", "b", "a"],
+      //   ["a", "a", "b", "b", "a", "b"],
+      //   ["a", "a", "b", "b", "b", "a"],
+      //   ["a", "a", "b", "a", "a", "b"],
+      // ];
+
+      // const word = "ababaababaaabbabbaabbaabbaba";
+
+      console.log(exist(board, word));
+    </script>
+  </body>
+</html>

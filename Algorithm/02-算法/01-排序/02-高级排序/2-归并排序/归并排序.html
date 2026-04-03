@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>归并</title>
+  </head>
+  <body>
+    <script>
+      let arr = [9, 6, 3, 1, 4, 2, 5, 8, 7];
+
+      function sort(arr, callback) {
+        if (arr.length < 2) {
+          return arr;
+        }
+        let result = [];
+        let mid = Math.floor(arr.length / 2);
+        let leftArr = arr.slice(0, mid);
+        let rightArr = arr.slice(mid);
+
+        return merge(sort(leftArr, callback), sort(rightArr, callback));
+        function merge(leftArr, rightArr) {
+          let i = 0;
+          let p1 = 0;
+          let p2 = 0;
+          while (p1 < leftArr.length && p2 < rightArr.length) {
+            result[i++] =
+              callback(leftArr[p1], rightArr[p2]) > 0
+                ? rightArr[p2++]
+                : leftArr[p1++];
+          }
+          while (p1 < leftArr.length) {
+            result[i++] = leftArr[p1++];
+          }
+          while (p2 < rightArr.length) {
+            result[i++] = rightArr[p2++];
+          }
+          return result;
+        }
+      }
+      console.log(sort(arr, (a, b) => a - b));
+    </script>
+  </body>
+</html>

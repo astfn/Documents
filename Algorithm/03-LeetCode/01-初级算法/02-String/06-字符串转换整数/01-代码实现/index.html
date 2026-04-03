@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import myAtoi from "./index.js";
+
+      /* 测试用例 */
+      //const s = "42";
+      //const s = "   -42";
+      //const s = "words and 987";
+      //const s = "-91283472332";
+      const s = "3.14159";
+      // const s = "-+12";
+      // const s = "+12";
+      // const s = "  -0012a42";
+      // const s = "   +0 123";
+
+      console.log(myAtoi(s));
+    </script>
+  </body>
+</html>

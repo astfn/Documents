@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>优先级队列</title>
+  </head>
+  <body>
+    <script>
+      function priorityQueue() {
+        this.items = [];
+        //元素类
+        function queueElement(value, priority) {
+          this.value = value;
+          this.priority = priority;
+        }
+        //入队方法：按优先级，找到正确位置入队
+        this.enqueue = function (value, priority) {
+          let element = new queueElement(value, priority);
+          //1. 原队列为空，直接push
+          if (this.items.length === 0) {
+            this.items.push(element);
+          } else {
+            //2. 逐次比较，找到正确位置插入
+            let isAdd = false;
+            for (let i = 0; i < this.items.length; i++) {
+              if (element.priority < this.items[i].priority) {
+                this.items.splice(i, 0, element);
+                isAdd = true;
+                break;
+              }
+            }
+            //3. 如果比所有优先级数字都要大，则直接放到最后
+            if (!isAdd) {
+              this.items.push(element);
+            }
+          }
+        };
+        //其他方法和普通队列相同，这里不再实现。
+      }
+      let pq = new priorityQueue();
+      pq.enqueue("Ashun", 11);
+      pq.enqueue("ashun", 32);
+      pq.enqueue("SHUN", 33);
+      pq.enqueue("Ashuntefannao", 200);
+      console.log(pq.items);
+    </script>
+  </body>
+</html>

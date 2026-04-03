@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Set() {
+        this.items = {};
+
+        Set.prototype.add = function (item) {
+          if (this.has(item)) return false;
+          this.items[item] = item;
+          return item;
+        };
+        Set.prototype.has = function (item) {
+          return this.items.hasOwnProperty(item);
+        };
+        Set.prototype.remove = function (item) {
+          if (!this.has(item)) return false;
+          return delete this.items[item];
+        };
+        Set.prototype.clear = function (item) {
+          return (this.items = {});
+        };
+        Set.prototype.size = function (item) {
+          return Object.keys(this.items).length;
+        };
+        Set.prototype.values = function (item) {
+          return Object.keys(this.items);
+        };
+      }
+      const set = new Set();
+      // set.add("Ashun");
+      // set.add("shun");
+      // set.remove("shun");
+      // console.log(set.size());
+      // console.log(set.values());
+      // console.log(set.clear());
+      // console.log(set.items);
+      set.add(["ashun,Ashun"]);
+      console.log(set.add(["Ashun"]));
+      console.log(set.items);
+    </script>
+  </body>
+</html>

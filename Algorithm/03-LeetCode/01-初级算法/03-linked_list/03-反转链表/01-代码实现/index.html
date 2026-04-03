@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      import LinkedList from "./LinkedList.js";
+      import reverseList from "./index.js";
+
+      /* 测试用例 */
+      let ll = new LinkedList();
+      let i = 0;
+      while (i++ < 5) {
+        ll.append(i);
+      }
+      // console.log(ll);
+
+      console.log(reverseList(ll.head));
+
+      // console.log(ll);
+    </script>
+  </body>
+</html>
