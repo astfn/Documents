@@ -1,0 +1,12 @@
+<!-- components/CommonLayout/CommonLayout.wxml -->
+<view class="layout">
+  <view class="header" wx:if="{{header}}">
+    <ThemeNavBar></ThemeNavBar>
+  </view>
+  <view class="main">
+    <slot></slot>
+  </view>
+  <view class="footer" wx:if="{{footer}}">
+    <ThemeTabBar items="{{footerActions}}"></ThemeTabBar>
+  </view>
+</view>

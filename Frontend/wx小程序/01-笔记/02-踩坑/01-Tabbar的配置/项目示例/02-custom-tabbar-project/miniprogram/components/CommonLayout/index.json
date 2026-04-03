@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "ThemeNavBar": "/components/ThemeNavBar",
+    "ThemeTabBar": "/components/ThemeTabBar"
+  }
+}

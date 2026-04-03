@@ -1,0 +1,10 @@
+<!-- components/ThemeNavBar/ThemeNavBar.wxml -->
+<!-- <view class="navbar">
+  <text class="left">{{left}}</text>
+  <text class="center">{{center}}</text>
+  <text class="right">{{right}}</text>
+ 
+</view> -->
+<van-nav-bar title="标题" left-text="返回" left-arrow>
+  <van-icon name="search" slot="right" />
+</van-nav-bar>

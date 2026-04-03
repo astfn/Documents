@@ -1,0 +1,14 @@
+<!--index.wxml-->
+<CommonLayout>
+  <scroll-view class="scrollarea" scroll-y type="list">
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+  </scroll-view>
+</CommonLayout>

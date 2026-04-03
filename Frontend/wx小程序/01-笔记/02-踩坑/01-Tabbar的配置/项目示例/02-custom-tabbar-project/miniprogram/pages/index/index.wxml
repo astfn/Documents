@@ -1,0 +1,49 @@
+<!--index.wxml-->
+<CommonLayout>
+  <scroll-view scroll-y type="list">
+    <view>首页header</view>
+    <van-button bind:click="testJump">jump</van-button>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页footer</view>
+  </scroll-view>
+</CommonLayout>

@@ -1,0 +1,13 @@
+page {
+  --custom-color-primary: #d0131b;
+
+  --van-primary-color: var(--custom-color-primary);
+  /* Button */
+  --button-border-radius: 10rpx;
+  --button-primary-background-color: var(--custom-color-primary);
+  --button-primary-border-color: var(--custom-color-primary);
+  /* Notify */
+  --notify-primary-background-color: var(--custom-color-primary);
+  /* Tag */
+  --tag-primary-color: var(--custom-color-primary);
+}
