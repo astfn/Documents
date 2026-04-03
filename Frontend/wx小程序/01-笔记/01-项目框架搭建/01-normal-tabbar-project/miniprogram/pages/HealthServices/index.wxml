@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<CommonLayout title="健康服务" showleftArrow="{{false}}">
+  <scroll-view class="scrollarea" scroll-y type="list">
+    HealthServices
+  </scroll-view>
+</CommonLayout>

@@ -1,0 +1,49 @@
+<!--index.wxml-->
+<CommonLayout title="首页" showleftArrow="{{false}}">
+  <scroll-view scroll-y type="list">
+    <view>首页header</view>
+    <van-button type="primary" bind:click="testJump">测试页面跳转</van-button>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页</view>
+    <view>首页footer</view>
+  </scroll-view>
+</CommonLayout>

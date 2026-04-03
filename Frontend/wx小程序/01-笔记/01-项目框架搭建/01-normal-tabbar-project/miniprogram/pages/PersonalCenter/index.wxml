@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<CommonLayout title="个人中心" showleftArrow="{{false}}">
+  <scroll-view class="scrollarea" scroll-y type="list">
+    PersonalCenter
+  </scroll-view>
+</CommonLayout>

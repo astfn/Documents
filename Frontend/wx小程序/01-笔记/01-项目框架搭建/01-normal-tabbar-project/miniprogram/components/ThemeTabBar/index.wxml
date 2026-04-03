@@ -1,0 +1,3 @@
+<van-tabbar active="{{ active }}" bind:change="onChange" placeholder border safe-area-inset-bottom>
+  <slot></slot>
+</van-tabbar>

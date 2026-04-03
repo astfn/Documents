@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "CommonLayout": "/components/CommonLayout/index",
+    "ThemeTabBar": "/components/ThemeTabBar/index",
+    "ThemeNavBar": "/components/ThemeNavBar"
+  }
+}

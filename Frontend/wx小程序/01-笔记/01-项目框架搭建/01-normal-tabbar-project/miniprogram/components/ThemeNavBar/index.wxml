@@ -1,0 +1,19 @@
+<van-nav-bar
+  title="{{title}}"
+  left-text="{{leftText}}"
+  leftArrow="{{leftArrow}}"
+  bind:click-left="clickLeft"
+  custom-style="{{customStyle}}"
+  fixed
+  placeholder
+>
+  <view slot="left">
+    <slot name="left"> </slot>
+  </view>
+  <view slot="title">
+    <slot name="title"> </slot>
+  </view>
+  <view slot="right">
+    <slot name="right"></slot>
+  </view>
+</van-nav-bar>

@@ -1,0 +1,19 @@
+.common-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.common-layout-header {
+  flex-shrink: 0; /* 固定头部高度 */
+}
+
+.common-layout-main {
+  flex: 1; /* 占据剩余空间 */
+  overflow-y: auto; /* 支持滚动 */
+}
+
+// .common-layout-footer {
+//   flex-shrink: 0; /* 固定底部高度 */
+// }

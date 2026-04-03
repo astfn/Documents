@@ -1,0 +1,29 @@
+<!-- components/CommonLayout/CommonLayout.wxml -->
+<!-- props 优先级 > 插槽 -->
+<view class="common-layout">
+  <view class="common-layout-header">
+    <slot name="header" wx:if="{{slotHeader}}"> </slot>
+    <ThemeNavBar
+      wx:if="{{!slotHeader}}"
+      leftText="{{headerLeftText}}"
+      title="{{title}}"
+      leftArrow="{{showleftArrow}}"
+    >
+      <view slot="left">
+        <slot name="header-left"> </slot>
+      </view>
+      <view slot="title">
+        <slot name="header-title"> </slot>
+      </view>
+      <view slot="right">
+        <slot name="header-right"> </slot>
+      </view>
+    </ThemeNavBar>
+  </view>
+  <view class="common-layout-main">
+    <slot></slot>
+  </view>
+  <view class="common-layout-footer">
+    <slot name="footer"></slot>
+  </view>
+</view>

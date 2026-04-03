@@ -1,0 +1,51 @@
+<!--index.wxml-->
+<CommonLayout class="custom-layout" slotHeader>
+  <ThemeNavBar slot="header" title="自定义header" customStyle="background: black" />
+  <view slot="footer">
+    <ThemeTabBar>
+      footer content
+    </ThemeTabBar>
+  </view>
+  <scroll-view class="scrollarea" scroll-y type="list">
+    <view>TestPage header</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage</view>
+    <view>TestPage footer</view>
+  </scroll-view>
+</CommonLayout>
